@@ -1,10 +1,33 @@
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
 @import "tailwindcss";
 
-
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Base layer for default element styles */
+@layer base {
+  h1, h2 {
+    margin: 0;
+    padding: 0;
+  }
 }
 
+/* Components layer for custom classes */
+  .heading-reset {
+    margin: 0;
+    padding: 0;
+  }
+
+  .react-calendar {
+    width: 100% !important;
+    border: none !important;
+    font-family: "Inter", sans-serif !important;
+  }
+
+  .react-calendar__navigation__label__labelText{
+    font-weight: 600;
+  }
+  .react-calendar__tile--active{
+    background-color: #c3ebfa !important;
+    color: black !important;
+  }
+  
 

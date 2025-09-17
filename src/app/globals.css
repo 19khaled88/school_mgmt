@@ -29,5 +29,15 @@
     background-color: #c3ebfa !important;
     color: black !important;
   }
+
+ .rbc-btn-group:first-child { /* Today */
+     display: none;
+  }
+
+
+.rbc-toolbar-label {
+  text-align: right !important;
+  padding: 0px 20px !important;
+}
   
 

@@ -21,12 +21,13 @@ const BigCalendar = () => {
                 startAccessor="start"
                 endAccessor="end"
                 titleAccessor={event => event.title || "No Title"}
-                views={["work_week", 'day']}
+                views={[Views.WORK_WEEK, Views.DAY]}
                 view={view}
-                style={{ height: '98%' }}
                 onView={handleOnChangeView}
-                min={new Date(2025, 1, 0, 8, 0, 0)}
-                max={new Date(2025, 1, 0, 17, 0, 0)}
+                defaultDate={new Date(2024, 7, 12)} // 👈 Show August 2024 events
+                style={{ height: '98vh' }}
+                min={new Date(2025, 7, 12, 8, 0, 0)}
+                max={new Date(2025, 7, 12, 17, 0, 0)}
             />
         </div>
     )

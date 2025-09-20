@@ -29,21 +29,25 @@ const menuItems = [
                 icon:'/parent.png',
                 label:'Parents',
                 href:'/list/parents',  
+                visible:['admin','teacher','parent']
             },
             {
                 icon:'/class.png',
                 label:'Classes',
                 href:'/list/classes',  
+                visible:['admin','teacher','student']
             },
             {
                 icon:'/lesson.png',
                 label:'Lessons',
                 href:'/list/lessons',  
+                visible:['admin','teacher','student']
             },
             {
                 icon:'/exam.png',
                 label:'Exams',
                 href:'/list/examps',  
+                visible:['admin','teacher','student']
             },
             {
                 icon:'/assignment.png',

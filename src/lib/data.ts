@@ -448,28 +448,66 @@ export const studentsData = [
 ];
 
 
-export const parentsData =[
-    
+export const parentsData = [
+  { id: 1, name: "Khaled Ahasan", email: "khaled.ahasan1@example.com", students: [1], phone: "555-1001", address: "123 Main St, Dhaka" },
+  { id: 2, name: "Nusrat Jahan", email: "nusrat.jahan@example.com", students: [2], phone: "555-1002", address: "45 Green Rd, Chittagong" },
+  { id: 3, name: "Rafiul Islam", email: "rafiul.islam@example.com", students: [3], phone: "555-1003", address: "78 Lake View, Khulna" },
+  { id: 4, name: "Sumaiya Akter", email: "sumaiya.akter@example.com", students: [4], phone: "555-1004", address: "90 College St, Sylhet" },
+  { id: 5, name: "Tanvir Rahman", email: "tanvir.rahman@example.com", students: [5], phone: "555-1005", address: "17 Park Ave, Barishal" },
+  { id: 6, name: "Mitu Chowdhury", email: "mitu.chowdhury@example.com", students: [6], phone: "555-1006", address: "23 New Market, Rajshahi" },
+  { id: 7, name: "Abdul Karim", email: "abdul.karim@example.com", students: [7], phone: "555-1007", address: "33 Station Rd, Comilla" },
+  { id: 8, name: "Farzana Yasmin", email: "farzana.yasmin@example.com", students: [8], phone: "555-1008", address: "77 Hill View, Rangpur" },
+  { id: 9, name: "Shakib Al Hasan", email: "shakib.hasan@example.com", students: [9], phone: "555-1009", address: "11 Garden St, Mymensingh" },
+  { id: 10, name: "Mehjabin Ahmed", email: "mehjabin.ahmed@example.com", students: [10], phone: "555-1010", address: "60 Airport Rd, Dhaka" },
+  { id: 11, name: "Jahidul Kabir", email: "jahidul.kabir@example.com", students: [11], phone: "555-1011", address: "92 North St, Sylhet" },
+  { id: 12, name: "Tasnim Rahman", email: "tasnim.rahman@example.com", students: [12], phone: "555-1012", address: "50 City Center, Khulna" },
+  { id: 13, name: "Rumana Hossain", email: "rumana.hossain@example.com", students: [13], phone: "555-1013", address: "88 River Rd, Barishal" },
+  { id: 14, name: "Ahsan Habib", email: "ahsan.habib@example.com", students: [14], phone: "555-1014", address: "41 School Rd, Chittagong" },
+  { id: 15, name: "Tanzina Sultana", email: "tanzina.sultana@example.com", students: [15], phone: "555-1015", address: "19 Park Lane, Rangpur" },
+  { id: 16, name: "Hasib Mahmud", email: "hasib.mahmud@example.com", students: [16], phone: "555-1016", address: "65 South Rd, Dhaka" },
+  { id: 17, name: "Sadia Rahman", email: "sadia.rahman@example.com", students: [17], phone: "555-1017", address: "30 New Town, Mymensingh" },
+  { id: 18, name: "Mamun Hossain", email: "mamun.hossain@example.com", students: [18], phone: "555-1018", address: "99 Lake Rd, Rajshahi" },
+  { id: 19, name: "Shamima Akter", email: "shamima.akter@example.com", students: [19], phone: "555-1019", address: "44 Market St, Comilla" },
+  { id: 20, name: "Rahim Uddin", email: "rahim.uddin@example.com", students: [20], phone: "555-1020", address: "12 East End, Sylhet" }
 ];
 
-export const subjectsData =[
-    
+export const subjectsData = [
+
 ];
 
-export const classesData =[
-    
+export const classesData = [
+
 ];
 
-export const lessonsData =[
-    
+export const lessonsData = [
+  { id: 1, subjectName: "Mathematics", class: "5A", teacherId: "1" },
+  { id: 2, subjectName: "English", class: "5A", teacherId: "2" },
+  { id: 3, subjectName: "Science", class: "6B", teacherId: "3" },
+  { id: 4, subjectName: "History", class: "6B", teacherId: "4" },
+  { id: 5, subjectName: "Geography", class: "7A", teacherId: "5" },
+  { id: 6, subjectName: "Physics", class: "7A", teacherId: "6" },
+  { id: 7, subjectName: "Chemistry", class: "8B", teacherId: "7" },
+  { id: 8, subjectName: "Biology", class: "8B", teacherId: "8" },
+  { id: 9, subjectName: "Computer Science", class: "9C", teacherId: "9" },
+  { id: 10, subjectName: "Art", class: "9C", teacherId: "10" },
+  { id: 11, subjectName: "Music", class: "10A", teacherId: "11" },
+  { id: 12, subjectName: "Physical Education", class: "10A", teacherId: "12" },
+  { id: 13, subjectName: "Economics", class: "11B", teacherId: "13" },
+  { id: 14, subjectName: "Business Studies", class: "11B", teacherId: "14" },
+  { id: 15, subjectName: "Accounting", class: "12C", teacherId: "15" },
+  { id: 16, subjectName: "Sociology", class: "12C", teacherId: "16" },
+  { id: 17, subjectName: "Philosophy", class: "12C", teacherId: "17" },
+  { id: 18, subjectName: "Bangla Literature", class: "9A", teacherId: "18" },
+  { id: 19, subjectName: "World History", class: "10B", teacherId: "19" },
+  { id: 20, subjectName: "Environmental Science", class: "11A", teacherId: "20" },
 ];
 
-export const examsData =[
-    
+export const examsData = [
+
 ];
 
-export const assignmentsData =[
-    
+export const assignmentsData = [
+
 ];
 
 export const annoucementsData = [
@@ -477,28 +515,28 @@ export const annoucementsData = [
 ];
 
 export const calendarEvents = [
-    {
-        title:'Math',
-        allDay:false,
-        start:new Date(2024, 7, 12, 8, 0),
-        end:new Date(2024, 7, 12, 8, 45)
-    },
-    {
-        title:'English',
-        allDay:false,
-        start:new Date(2024, 7, 12, 9, 0),
-        end:new Date(2024, 7, 12, 9, 45)
-    },
-    {
-        title:'Biology',
-        allDay:false,
-        start:new Date(2024, 7, 12, 10, 0),
-        end:new Date(2024, 7, 12, 10, 45)
-    },
-    {
-        title:'Physics',
-        allDay:false,
-        start:new Date(2024, 7, 12, 11, 0),
-        end:new Date(2024, 7, 12, 11, 45)
-    },
+  {
+    title: 'Math',
+    allDay: false,
+    start: new Date(2024, 7, 12, 8, 0),
+    end: new Date(2024, 7, 12, 8, 45)
+  },
+  {
+    title: 'English',
+    allDay: false,
+    start: new Date(2024, 7, 12, 9, 0),
+    end: new Date(2024, 7, 12, 9, 45)
+  },
+  {
+    title: 'Biology',
+    allDay: false,
+    start: new Date(2024, 7, 12, 10, 0),
+    end: new Date(2024, 7, 12, 10, 45)
+  },
+  {
+    title: 'Physics',
+    allDay: false,
+    start: new Date(2024, 7, 12, 11, 0),
+    end: new Date(2024, 7, 12, 11, 45)
+  },
 ]

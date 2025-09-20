@@ -45,11 +45,11 @@ const columns = [
 
 const TeacherListPage = () => {
   const renderRow = (item: Teacher) => {
-    
+
     return (
       <tr key={item.id}>
         <td>
-          <Image src={item.photo} alt='' width={40} height={40} className='md:hidden w-10 h-10 rounded-full object-cover'/>
+          <Image src={item.photo} alt='' width={40} height={40} className='md:hidden w-10 h-10 rounded-full object-cover' />
           <div className='flex flex-col'>
             <h3 className='font-semibold'>{item.name}</h3>
             <p className='text-xs text-gray-500'>{item?.email}</p>
@@ -64,13 +64,13 @@ const TeacherListPage = () => {
           <div className='flex items-center gap-2'>
             <Link href={`/list/teachers/${item.id}`}>
               <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                <Image src="/view.png" alt='' width={16} height={16}/>
+                <Image src="/view.png" alt='' width={16} height={16} />
               </button>
             </Link>
             {
               role === 'admin' && (
                 <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                  <Image src="/delete.png" alt='' width={16} height={16}/>
+                  <Image src="/delete.png" alt='' width={16} height={16} />
                 </button>
               )
             }
@@ -95,9 +95,13 @@ const TeacherListPage = () => {
               <Image src="/sort.png" alt='' width={14} height={14} />
             </button>
 
-            <button className='w-8 h-8 flex items-center justify-center rounded-full bg-yellow-300'>
-              <Image src="/plus.png" alt='' width={14} height={14} />
-            </button>
+            {
+              role === 'admin' && (
+                <button className='w-8 h-8 flex items-center justify-center rounded-full bg-yellow-300'>
+                  <Image src="/plus.png" alt='' width={14} height={14} />
+                </button>
+              )
+            }
           </div>
         </div>
       </div>

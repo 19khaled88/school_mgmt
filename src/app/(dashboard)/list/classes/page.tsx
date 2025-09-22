@@ -1,32 +1,31 @@
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { parentsData, role, studentsData } from '@/lib/data'
+import { classesData, parentsData, role, studentsData } from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Parent = {
+type Classes = {
     id: number;
     name: string;
-    email?: string;
-    students: string[];
-    phone: string;
-    address: string;
+    capacity: string;
+    grade: string;
+    supervisor: string;
 }
 
 const columns = [
     {
-        header: 'Info', accessor: 'info'
+        header: 'Class Name', accessor: 'class name', className: 'hidden md:table-cell',
     },
     {
-        header: 'Students Names', accessor: 'students', className: 'hidden md:table-cell',
+        header: 'Capacity', accessor: 'capacity', className: 'hidden md:table-cell',
     },
     {
-        header: 'Phone', accessor: 'phone', className: 'hidden lg:table-cell',
+        header: 'Grade', accessor: 'grade', className: 'hidden lg:table-cell',
     },
     {
-        header: 'Address', accessor: 'address', className: 'hidden lg:table-cell',
+        header: 'Supervisor', accessor: 'supervisor', className: 'hidden lg:table-cell',
     },
     {
         header: 'Actions', accessor: 'action',
@@ -34,26 +33,15 @@ const columns = [
 ]
 
 
-const ParentListPage = () => {
-    const renderRow = (item: Parent) => {
-        return item.students.map((studentId, index) => {
-            const student = studentsData.find(s => String(s.id) === String(studentId));
-            const studentName = student ? student.name : 'Unknown';
-
-            return (
-                <tr key={`${item.id} - ${index}`}>
-                    <td>
-                        <div className='flex flex-col'>
-                            <h3 className='font-semibold'>{item.name}</h3>
-                            <p className='text-xs text-gray-500'>{item?.email}</p>
-                        </div>
-                    </td>
-                    <td className='hidden md:table-cell'>{
-                        // studentsData.filter(student => item.students.map(String).includes(String(student.id))).map(student => student.name).join(', ') || "No Students"
-                        studentName
-                    }</td>
-                    <td className='hidden md:table-cell'>{item.phone}</td>
-                    <td className='hidden md:table-cell'>{item.address}</td>
+const ClassesListPage = () => {
+    const renderRow = (item: Classes) => {
+        console.log(item)
+        return (
+                <tr key={`${item.id}`}>
+                    <td className='hidden md:table-cell'>{item.name}</td>
+                    <td className='hidden md:table-cell'>{item.capacity}</td>
+                    <td className='hidden md:table-cell'>{item.grade}</td>
+                    <td className='hidden md:table-cell'>{item.supervisor}</td>
                     <td>
                         <div className='flex items-center gap-2'>
                             <Link href={`/list/students/${item.id}`}>
@@ -72,7 +60,6 @@ const ParentListPage = () => {
                     </td>
                 </tr>
             )
-        })
     }
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
@@ -102,7 +89,7 @@ const ParentListPage = () => {
             </div>
 
             {/*LIST*/}
-            <Table columns={columns} renderRow={renderRow} data={parentsData} />
+            <Table columns={columns} renderRow={renderRow} data={classesData} />
             {/*PAGINATION*/}
             <Pagination />
 
@@ -110,4 +97,4 @@ const ParentListPage = () => {
     )
 }
 
-export default ParentListPage
+export default ClassesListPage

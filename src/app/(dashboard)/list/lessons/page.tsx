@@ -16,7 +16,7 @@ type Lesson = {
 const columns = [
     
     {
-        header: 'Subject Names', accessor: 'subjects', className: 'hidden md:table-cell',
+        header: 'Subject Names', accessor: 'subjects', 
     },
     {
         header: 'Class', accessor: 'classes', className: 'hidden lg:table-cell',
@@ -34,7 +34,7 @@ const LessonListPage = () => {
     const renderRow = (item: Lesson) => {  
       return (
             <tr key={item.id}>
-                <td className='hidden md:table-cell'>{item.subjectName}</td>
+                <td>{item.subjectName}</td>
                 <td className='hidden md:table-cell'>{item.class}</td>
                 <td className='hidden md:table-cell'>{
                     teachersData.filter(teacher=>(item.teacherId) === String(teacher.id)).map(ls =>ls.name).join(', ')   

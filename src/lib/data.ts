@@ -559,10 +559,29 @@ export const examsData =  [
   { id: 18, subjectName: 'Physics', class: '9B', teacherId: '1000000007', date: '2025-10-18' },
   { id: 19, subjectName: 'Chemistry', class: '10A', teacherId: '1000000008', date: '2025-10-19' },
   { id: 20, subjectName: 'Biology', class: '10B', teacherId: '1000000009', date: '2025-10-20' },
-]
+];
 
 export const assignmentsData = [
-
+  { id: 1, subjectName: 'Mathematics', class: '1A', teacherId: '1000000001', due_date: '2025-10-01' },
+  { id: 2, subjectName: 'Statistics', class: '3B', teacherId: '1000000001', due_date: '2025-10-02' },
+  { id: 3, subjectName: 'English', class: '2A', teacherId: '1000000002', due_date: '2025-10-03' },
+  { id: 4, subjectName: 'Science', class: '2B', teacherId: '1000000003', due_date: '2025-10-04' },
+  { id: 5, subjectName: 'History', class: '3A', teacherId: '1000000004', due_date: '2025-10-05' },
+  { id: 6, subjectName: 'Geography', class: '3B', teacherId: '1000000005', due_date: '2025-10-06' },
+  { id: 7, subjectName: 'Computer', class: '4A', teacherId: '1000000006', due_date: '2025-10-07' },
+  { id: 8, subjectName: 'Physics', class: '4B', teacherId: '1000000007', due_date: '2025-10-08' },
+  { id: 9, subjectName: 'Chemistry', class: '5A', teacherId: '1000000008', due_date: '2025-10-09' },
+  { id: 10, subjectName: 'Biology', class: '5B', teacherId: '1000000009', due_date: '2025-10-10' },
+  { id: 11, subjectName: 'Mathematics', class: '6A', teacherId: '1000000001', due_date: '2025-10-11' },
+  { id: 12, subjectName: 'Statistics', class: '6B', teacherId: '1000000001', due_date: '2025-10-12' },
+  { id: 13, subjectName: 'English', class: '7A', teacherId: '1000000002', due_date: '2025-10-13' },
+  { id: 14, subjectName: 'Science', class: '7B', teacherId: '1000000003', due_date: '2025-10-14' },
+  { id: 15, subjectName: 'History', class: '8A', teacherId: '1000000004', due_date: '2025-10-15' },
+  { id: 16, subjectName: 'Geography', class: '8B', teacherId: '1000000005', due_date: '2025-10-16' },
+  { id: 17, subjectName: 'Computer', class: '9A', teacherId: '1000000006', due_date: '2025-10-17' },
+  { id: 18, subjectName: 'Physics', class: '9B', teacherId: '1000000007', due_date: '2025-10-18' },
+  { id: 19, subjectName: 'Chemistry', class: '10A', teacherId: '1000000008', due_date: '2025-10-19' },
+  { id: 20, subjectName: 'Biology', class: '10B', teacherId: '1000000009', due_date: '2025-10-20' },
 ];
 
 export const annoucementsData = [

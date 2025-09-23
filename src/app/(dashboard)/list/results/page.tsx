@@ -1,69 +1,67 @@
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { role, studentsData } from '@/lib/data'
+import { examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Student = {
+type Result = {
     id: number;
-    studentId: string;
-    name: string;
-    email?: string;
-    grade:number;
-    class:string;
-    photo: string;
-    phone: string;
-    address: string;
+    subject: string;
+    class: string;
+    teacher: string;
+    student:string;
+    type:"exam" | "assignment";
+    date:string;
+    score:number;
 }
 
 const columns = [
+    
     {
-        header: 'Info', accessor: 'info'
+        header: 'Subject', accessor: 'subject', 
     },
     {
-        header: 'Student ID', accessor: 'student id',
+        header: 'Class', accessor: 'classe', 
     },
     {
-        header: 'Grade', accessor: 'grade', className: 'hidden md:table-cell',
-    }
-    ,
-    {
-        header: 'Classes', accessor: 'classes', className: 'hidden md:table-cell',
+        header: 'Teacher', accessor: 'teacher', className:'hidden lg:table-cell',
     },
     {
-        header: 'Phone', accessor: 'phone', className: 'hidden lg:table-cell',
+        header: 'Type', accessor: 'types', className:'hidden lg:table-cell',
     },
     {
-        header: 'Address', accessor: 'address', className: 'hidden lg:table-cell',
+        header: 'Date', accessor: 'dates', className:'hidden lg:table-cell',
+    },
+    {
+        header: 'Score', accessor: 'score', className:'hidden lg:table-cell',
     },
     {
         header: 'Actions', accessor: 'action',
     }
 ]
 
-const StudentListPage = () => {
-    const renderRow = (item: Student) => {
-        return (
+
+const ResultsListPage = () => {
+    const renderRow = (item: Result) => {  
+      return (
             <tr key={item.id}>
-                <td>
-                    <Image src={item.photo} alt='' width={40} height={40} className='md:hidden w-10 h-10 rounded-full object-cover' />
-                    <div className='flex flex-col'>
-                        <h3 className='font-semibold'>{item.name}</h3>
-                        <p className='text-xs text-gray-500'>{item?.email}</p>
-                    </div>
-                </td>
-                <td>{item.studentId}</td>
-                <td className='hidden md:table-cell'>{item.grade}</td>
-                <td className='hidden md:table-cell'>{item.class}</td>
-                <td className='hidden md:table-cell'>{item.phone}</td>
-                <td className='hidden md:table-cell'>{item.address}</td>
+                <td>{item.subject}</td>
+                <td>{item.class}</td>
+                <td className='hidden md:table-cell'>{
+                    teachersData.filter(teacher=>(item.teacher) === String(teacher.teacherId)).map(ls =>ls.name).join(', ')   
+                }</td>
+                <td className='hidden md:table-cell'>{
+                    studentsData.filter(student=>(item.student) === String(student.studentId)).map(ls =>ls.name).join(', ')   
+                }</td>
+                <td className='hidden md:table-cell'>{item.date}</td>
+                <td className='hidden md:table-cell'>{item.score}</td>
                 <td>
                     <div className='flex items-center gap-2'>
-                        <Link href={`/list/students/${item.id}`}>
+                        <Link href={`/list/exams/${item.id}`}>
                             <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                                <Image src="/view.png" alt='' width={16} height={16} />
+                                <Image src="/edit.png" alt='' width={16} height={16} />
                             </button>
                         </Link>
                         {
@@ -82,7 +80,7 @@ const StudentListPage = () => {
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}
             <div className='flex items-center justify-between'>
-                <h1 className='hidden md:block text-lg font-semibold'>All Students</h1>
+                <h1 className='hidden md:block text-lg font-semibold'>All Exams</h1>
                 <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
                     <TableSearch />
                     <div className='flex items-center gap-4 self-end'>
@@ -106,7 +104,7 @@ const StudentListPage = () => {
             </div>
 
             {/*LIST*/}
-            <Table columns={columns} renderRow={renderRow} data={studentsData} />
+            <Table columns={columns} renderRow={renderRow} data={resultsData} />
             {/*PAGINATION*/}
             <Pagination />
 
@@ -114,4 +112,4 @@ const StudentListPage = () => {
     )
 }
 
-export default StudentListPage
+export default ResultsListPage

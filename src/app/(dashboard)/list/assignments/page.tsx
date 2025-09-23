@@ -17,7 +17,7 @@ type Assignment = {
 const columns = [
     
     {
-        header: 'Subject', accessor: 'subject', className: 'hidden md:table-cell',
+        header: 'Subject', accessor: 'subject', 
     },
     {
         header: 'Class', accessor: 'classe', className: 'hidden lg:table-cell',
@@ -38,7 +38,7 @@ const AssignmentsListPage = () => {
     const renderRow = (item: Assignment) => {  
       return (
             <tr key={item.id}>
-                <td className='hidden md:table-cell'>{item.subjectName}</td>
+                <td >{item.subjectName}</td>
                 <td className='hidden md:table-cell'>{item.class}</td>
                 <td className='hidden md:table-cell'>{
                     teachersData.filter(teacher=>(item.teacherId) === String(teacher.teacherId)).map(ls =>ls.name).join(', ')   

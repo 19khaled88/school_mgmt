@@ -17,7 +17,7 @@ type Exam = {
 const columns = [
     
     {
-        header: 'Subject', accessor: 'subjects', className: 'hidden md:table-cell',
+        header: 'Subject', accessor: 'subjects', 
     },
     {
         header: 'Class', accessor: 'classes', className: 'hidden lg:table-cell',
@@ -38,7 +38,7 @@ const ExamsListPage = () => {
     const renderRow = (item: Exam) => {  
       return (
             <tr key={item.id}>
-                <td className='hidden md:table-cell'>{item.subjectName}</td>
+                <td>{item.subjectName}</td>
                 <td className='hidden md:table-cell'>{item.class}</td>
                 <td className='hidden md:table-cell'>{
                     teachersData.filter(teacher=>(item.teacherId) === String(teacher.teacherId)).map(ls =>ls.name).join(', ')   

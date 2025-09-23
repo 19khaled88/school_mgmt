@@ -584,6 +584,29 @@ export const assignmentsData = [
   { id: 20, subjectName: 'Biology', class: '10B', teacherId: '1000000009', due_date: '2025-10-20' },
 ];
 
+export const resultsData =[
+  { id: 1, subject: 'Mathematics', class: '1A', teacher: '1000000001', student: '10000001', type: 'exam', date: '2025-09-01', score: 88 },
+  { id: 2, subject: 'Statistics', class: '3B', teacher: '1000000001', student: '10000002', type: 'assignment', date: '2025-09-02', score: 92 },
+  { id: 3, subject: 'English', class: '2A', teacher: '1000000002', student: '10000003', type: 'exam', date: '2025-09-03', score: 76 },
+  { id: 4, subject: 'Science', class: '2B', teacher: '1000000003', student: '10000004', type: 'exam', date: '2025-09-04', score: 81 },
+  { id: 5, subject: 'History', class: '3A', teacher: '1000000004', student: '10000005', type: 'assignment', date: '2025-09-05', score: 95 },
+  { id: 6, subject: 'Geography', class: '3B', teacher: '1000000005', student: '10000006', type: 'exam', date: '2025-09-06', score: 69 },
+  { id: 7, subject: 'Computer', class: '4A', teacher: '1000000006', student: '10000007', type: 'assignment', date: '2025-09-07', score: 87 },
+  { id: 8, subject: 'Physics', class: '4B', teacher: '1000000007', student: '10000008', type: 'exam', date: '2025-09-08', score: 90 },
+  { id: 9, subject: 'Chemistry', class: '5A', teacher: '1000000008', student: '10000009', type: 'assignment', date: '2025-09-09', score: 74 },
+  { id: 10, subject: 'Biology', class: '5B', teacher: '1000000009', student: '10000010', type: 'exam', date: '2025-09-10', score: 82 },
+  { id: 11, subject: 'Mathematics', class: '6A', teacher: '1000000001', student: '10000011', type: 'exam', date: '2025-09-11', score: 93 },
+  { id: 12, subject: 'Statistics', class: '6B', teacher: '1000000001', student: '10000012', type: 'assignment', date: '2025-09-12', score: 78 },
+  { id: 13, subject: 'English', class: '7A', teacher: '1000000002', student: '10000013', type: 'exam', date: '2025-09-13', score: 85 },
+  { id: 14, subject: 'Science', class: '7B', teacher: '1000000003', student: '10000014', type: 'assignment', date: '2025-09-14', score: 91 },
+  { id: 15, subject: 'History', class: '8A', teacher: '1000000004', student: '10000015', type: 'exam', date: '2025-09-15', score: 68 },
+  { id: 16, subject: 'Geography', class: '8B', teacher: '1000000005', student: '10000016', type: 'exam', date: '2025-09-16', score: 77 },
+  { id: 17, subject: 'Computer', class: '9A', teacher: '1000000006', student: '10000017', type: 'assignment', date: '2025-09-17', score: 94 },
+  { id: 18, subject: 'Physics', class: '9B', teacher: '1000000007', student: '10000018', type: 'exam', date: '2025-09-18', score: 89 },
+  { id: 19, subject: 'Chemistry', class: '10A', teacher: '1000000008', student: '10000019', type: 'assignment', date: '2025-09-19', score: 72 },
+  { id: 20, subject: 'Biology', class: '10B', teacher: '1000000009', student: '10000020', type: 'exam', date: '2025-09-20', score: 96 },
+];
+
 export const annoucementsData = [
 
 ];

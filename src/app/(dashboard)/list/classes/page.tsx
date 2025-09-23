@@ -16,7 +16,7 @@ type Classes = {
 
 const columns = [
     {
-        header: 'Class Name', accessor: 'class name', className: 'hidden md:table-cell',
+        header: 'Class Name', accessor: 'class name',
     },
     {
         header: 'Capacity', accessor: 'capacity', className: 'hidden md:table-cell',
@@ -25,7 +25,7 @@ const columns = [
         header: 'Grade', accessor: 'grade', className: 'hidden lg:table-cell',
     },
     {
-        header: 'Supervisor', accessor: 'supervisor', className: 'hidden lg:table-cell',
+        header: 'Supervisor', accessor: 'supervisor', 
     },
     {
         header: 'Actions', accessor: 'action',
@@ -38,10 +38,10 @@ const ClassesListPage = () => {
         console.log(item)
         return (
                 <tr key={`${item.id}`}>
-                    <td className='hidden md:table-cell'>{item.name}</td>
+                    <td >{item.name}</td>
                     <td className='hidden md:table-cell'>{item.capacity}</td>
                     <td className='hidden md:table-cell'>{item.grade}</td>
-                    <td className='hidden md:table-cell'>{item.supervisor}</td>
+                    <td>{item.supervisor}</td>
                     <td>
                         <div className='flex items-center gap-2'>
                             <Link href={`/list/students/${item.id}`}>

@@ -611,6 +611,29 @@ export const annoucementsData = [
 
 ];
 
+export const eventsData = [
+  { id: 1, title: 'Math Midterm Exam', class: '1A', date: '2025-10-01', startTime: '09:00', endTime: '11:00' },
+  { id: 2, title: 'English Assignment Review', class: '1A', date: '2025-10-02', startTime: '10:00', endTime: '11:30' },
+  { id: 3, title: 'Science Quiz', class: '2A', date: '2025-10-03', startTime: '08:30', endTime: '09:30' },
+  { id: 4, title: 'Geography Presentation', class: '2B', date: '2025-10-04', startTime: '13:00', endTime: '14:30' },
+  { id: 5, title: 'History Debate', class: '3A', date: '2025-10-05', startTime: '11:00', endTime: '12:00' },
+  { id: 6, title: 'Mathematics Practice Test', class: '3B', date: '2025-10-06', startTime: '09:15', endTime: '10:45' },
+  { id: 7, title: 'English Essay Submission', class: '4A', date: '2025-10-07', startTime: '10:00', endTime: '12:00' },
+  { id: 8, title: 'Science Practical', class: '4B', date: '2025-10-08', startTime: '14:00', endTime: '16:00' },
+  { id: 9, title: 'Computer Lab Session', class: '5A', date: '2025-10-09', startTime: '15:00', endTime: '17:00' },
+  { id: 10, title: 'Physics Seminar', class: '5B', date: '2025-10-10', startTime: '09:30', endTime: '10:30' },
+  { id: 11, title: 'Chemistry Lab Test', class: '6A', date: '2025-10-11', startTime: '13:30', endTime: '15:00' },
+  { id: 12, title: 'Biology Group Project', class: '6B', date: '2025-10-12', startTime: '08:45', endTime: '10:15' },
+  { id: 13, title: 'Math Final Exam', class: '7A', date: '2025-10-13', startTime: '09:00', endTime: '11:30' },
+  { id: 14, title: 'English Oral Test', class: '7B', date: '2025-10-14', startTime: '11:00', endTime: '12:30' },
+  { id: 15, title: 'History Presentation', class: '8A', date: '2025-10-15', startTime: '14:00', endTime: '15:30' },
+  { id: 16, title: 'Geography Field Report', class: '8B', date: '2025-10-16', startTime: '10:15', endTime: '11:45' },
+  { id: 17, title: 'Computer Coding Contest', class: '9A', date: '2025-10-17', startTime: '09:30', endTime: '11:30' },
+  { id: 18, title: 'Physics Group Discussion', class: '9B', date: '2025-10-18', startTime: '12:00', endTime: '13:30' },
+  { id: 19, title: 'Chemistry Final Exam', class: '10A', date: '2025-10-19', startTime: '08:00', endTime: '10:00' },
+  { id: 20, title: 'Biology Practical Test', class: '10B', date: '2025-10-20', startTime: '14:30', endTime: '16:00' },
+];
+
 export const calendarEvents = [
   {
     title: 'Math',

@@ -1,41 +1,36 @@
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
+import { eventsData, examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Result = {
+type Event = {
     id: number;
-    subject: string;
+    title: string;
     class: string;
-    teacher: string;
-    student:string;
-    type:"exam" | "assignment";
     date:string;
-    score:number;
+    startTime:string;
+    endTime:string;
 }
 
 const columns = [
     
     {
-        header: 'Subject', accessor: 'subject', 
+        header: 'Title', accessor: 'title', 
     },
     {
         header: 'Class', accessor: 'classe', 
     },
     {
-        header: 'Teacher', accessor: 'teacher', className:'hidden lg:table-cell',
-    },
-    {
-        header: 'Type', accessor: 'types', className:'hidden lg:table-cell',
-    },
-    {
         header: 'Date', accessor: 'dates', className:'hidden lg:table-cell',
     },
     {
-        header: 'Score', accessor: 'score', className:'hidden lg:table-cell',
+        header: 'Start Date', accessor: 'startDate', className:'hidden lg:table-cell',
+    },
+     {
+        header: 'End Date', accessor: 'endDate', className:'hidden lg:table-cell',
     },
     {
         header: 'Actions', accessor: 'action',
@@ -43,20 +38,16 @@ const columns = [
 ]
 
 
-const ResultsListPage = () => {
-    const renderRow = (item: Result) => {  
+const EventsListPage = () => {
+    const renderRow = (item: Event) => {  
       return (
             <tr key={item.id}>
-                <td>{item.subject}</td>
+                <td>{item.title}</td>
                 <td>{item.class}</td>
-                <td className='hidden md:table-cell'>{
-                    teachersData.filter(teacher=>(item.teacher) === String(teacher.teacherId)).map(ls =>ls.name).join(', ')   
-                }</td>
-                <td className='hidden md:table-cell'>{
-                    studentsData.filter(student=>(item.student) === String(student.studentId)).map(ls =>ls.name).join(', ')   
-                }</td>
                 <td className='hidden md:table-cell'>{item.date}</td>
-                <td className='hidden md:table-cell'>{item.score}</td>
+                <td className='hidden md:table-cell'>{item.startTime}</td>
+                <td className='hidden md:table-cell'>{item.endTime}</td>
+                
                 <td>
                     <div className='flex items-center gap-2'>
                         <Link href={`/list/exams/${item.id}`}>
@@ -80,7 +71,7 @@ const ResultsListPage = () => {
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}
             <div className='flex items-center justify-between'>
-                <h1 className='hidden md:block text-lg font-semibold'>All Results</h1>
+                <h1 className='hidden md:block text-lg font-semibold'>All Events</h1>
                 <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
                     <TableSearch />
                     <div className='flex items-center gap-4 self-end'>
@@ -104,7 +95,7 @@ const ResultsListPage = () => {
             </div>
 
             {/*LIST*/}
-            <Table columns={columns} renderRow={renderRow} data={resultsData} />
+            <Table columns={columns} renderRow={renderRow} data={eventsData} />
             {/*PAGINATION*/}
             <Pagination />
 
@@ -112,4 +103,4 @@ const ResultsListPage = () => {
     )
 }
 
-export default ResultsListPage
+export default EventsListPage

@@ -608,7 +608,26 @@ export const resultsData =[
 ];
 
 export const annoucementsData = [
-
+  { id: 1, title: 'Math Olympiad', class: '1A', date: '2025-11-01' },
+  { id: 2, title: 'English Poetry Contest', class: '1B', date: '2025-11-02' },
+  { id: 3, title: 'Science Fair', class: '2A', date: '2025-11-03' },
+  { id: 4, title: 'Geography Quiz', class: '2B', date: '2025-11-04' },
+  { id: 5, title: 'History Exhibition', class: '3A', date: '2025-11-05' },
+  { id: 6, title: 'Sports Day', class: '3B', date: '2025-11-06' },
+  { id: 7, title: 'Computer Coding Hackathon', class: '4A', date: '2025-11-07' },
+  { id: 8, title: 'Physics Workshop', class: '4B', date: '2025-11-08' },
+  { id: 9, title: 'Chemistry Lab Tour', class: '5A', date: '2025-11-09' },
+  { id: 10, title: 'Biology Nature Walk', class: '5B', date: '2025-11-10' },
+  { id: 11, title: 'Mathematics Seminar', class: '6A', date: '2025-11-11' },
+  { id: 12, title: 'English Drama Rehearsal', class: '6B', date: '2025-11-12' },
+  { id: 13, title: 'Art and Craft Exhibition', class: '7A', date: '2025-11-13' },
+  { id: 14, title: 'Cultural Festival', class: '7B', date: '2025-11-14' },
+  { id: 15, title: 'Science Debate', class: '8A', date: '2025-11-15' },
+  { id: 16, title: 'Geography Field Trip', class: '8B', date: '2025-11-16' },
+  { id: 17, title: 'Computer Awareness Seminar', class: '9A', date: '2025-11-17' },
+  { id: 18, title: 'Physics Project Showcase', class: '9B', date: '2025-11-18' },
+  { id: 19, title: 'Chemistry Experiment Day', class: '10A', date: '2025-11-19' },
+  { id: 20, title: 'Farewell Ceremony', class: '10B', date: '2025-11-20' },
 ];
 
 export const eventsData = [

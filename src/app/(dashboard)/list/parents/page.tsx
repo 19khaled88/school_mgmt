@@ -62,14 +62,8 @@ const ParentListPage = () => {
                                 role === 'admin' && (
                                     <>
                                         <Link href={`/list/parents/${item.id}`}>
-                                            {/* <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                                                <Image src="/edit.png" alt='' width={16} height={16} />
-                                            </button> */}
                                             <FormModal table='parent' type='update' data={item} />
                                         </Link>
-                                        {/* // <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                                        //     <Image src="/delete.png" alt='' width={16} height={16} />
-                                        // </button> */}
                                         <FormModal table='parent' type='delete' id={item.id} />
                                     </>
                                 )
@@ -98,9 +92,6 @@ const ParentListPage = () => {
 
                         {
                             role === 'admin' && (
-                                // <button className='w-8 h-8 flex items-center justify-center rounded-full bg-yellow-300'>
-                                //     <Image src="/plus.png" alt='' width={14} height={14} />
-                                // </button>
                                 <FormModal table='parent' type='create' />
                             )
                         }

@@ -1,3 +1,4 @@
+import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -25,7 +26,7 @@ const columns = [
         header: 'Grade', accessor: 'grade', className: 'hidden lg:table-cell',
     },
     {
-        header: 'Supervisor', accessor: 'supervisor', 
+        header: 'Supervisor', accessor: 'supervisor',
     },
     {
         header: 'Actions', accessor: 'action',
@@ -37,29 +38,28 @@ const ClassesListPage = () => {
     const renderRow = (item: Classes) => {
         console.log(item)
         return (
-                <tr key={`${item.id}`}>
-                    <td >{item.name}</td>
-                    <td className='hidden md:table-cell'>{item.capacity}</td>
-                    <td className='hidden md:table-cell'>{item.grade}</td>
-                    <td>{item.supervisor}</td>
-                    <td>
-                        <div className='flex items-center gap-2'>
-                            <Link href={`/list/students/${item.id}`}>
-                                <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                                    <Image src="/edit.png" alt='' width={16} height={16} />
-                                </button>
-                            </Link>
-                            {
-                                role === 'admin' && (
-                                    <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                                        <Image src="/delete.png" alt='' width={16} height={16} />
-                                    </button>
-                                )
-                            }
-                        </div>
-                    </td>
-                </tr>
-            )
+            <tr key={`${item.id}`}>
+                <td >{item.name}</td>
+                <td className='hidden md:table-cell'>{item.capacity}</td>
+                <td className='hidden md:table-cell'>{item.grade}</td>
+                <td>{item.supervisor}</td>
+                <td>
+                    <div className='flex items-center gap-2'>
+
+                        {
+                            role === 'admin' && (
+                                <>
+                                    <Link href={`/list/classes/${item.id}`}>
+                                        <FormModal table='class' type='update' data={item}/>
+                                    </Link>
+                                    <FormModal table='class' type='delete' id={item.id} />
+                                </>
+                            )
+                        }
+                    </div>
+                </td>
+            </tr>
+        )
     }
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
@@ -79,9 +79,7 @@ const ClassesListPage = () => {
 
                         {
                             role === 'admin' && (
-                                <button className='w-8 h-8 flex items-center justify-center rounded-full bg-yellow-300'>
-                                    <Image src="/plus.png" alt='' width={14} height={14} />
-                                </button>
+                                <FormModal table='class' type='create'/>
                             )
                         }
                     </div>

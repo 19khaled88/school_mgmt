@@ -1,5 +1,6 @@
 import Announcements from '@/components/Announcements'
 import BigCalendar from '@/components/BigCalendar'
+import FormModal from '@/components/FormModal'
 import Performance from '@/components/Performance'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -18,7 +19,23 @@ const SingleTeacherPage = () => {
                             <Image src="https://images.openai.com/thumbnails/url/2jOY1nicu1mUUVJSUGylr5-al1xUWVCSmqJbkpRnoJdeXJJYkpmsl5yfq5-Zm5ieWmxfaAuUsXL0S7F0Tw5JDTMoyDbxNUupCEgKyC1zzikMrvIodIrKd9YtL3FOzo1PywizqNINK8oKSzMvLcoJ8XJ19C8q9PBUKwYA4NAqAQ" alt='' width={144} height={144} className='w-36 h-36 rounded-full object-cover' />
                         </div>
                         <div className='w-2/3 flex flex-col justify-between gap-4'>
-                            <h1>Leonard Snyder</h1>
+                            <div className='flex items-center gap-4'>
+                                <h1 className='text-xl font-semibold'>Leonard Snyder</h1>
+                                <FormModal table='teacher' type='update' data={{
+                                    id: 1,
+                                    username: '1000000001',
+                                    password: 'Khaled Ahasan',
+                                    email: 'khaled.ahasan@example.com',
+                                    img: 'https://randomuser.me/api/portraits/men/11.jpg',
+                                    lastName: 'ahasan',
+                                    phone: '5551111001',
+                                    bloodType: 'A-',
+                                    dateOfBirth: '2222',
+                                    sex: 'male',
+                                    firstName: 'khaled',
+                                    address: '123 Main St, Dhaka',
+                                }} />
+                            </div>
                             <p className='text-sm text-gray-500'>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                             </p>

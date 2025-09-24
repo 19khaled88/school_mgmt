@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { hostname: "iamges.pexels.com" },
       { hostname: "randomuser.me" },
+      { hostname: 'images.openai.com' },
+      { hostname: 'chatgpt.com' }
     ],
   },
 };

@@ -1,3 +1,4 @@
+import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -11,22 +12,22 @@ type Assignment = {
     subjectName: string;
     class: string;
     teacherId: string;
-    due_date:string;
+    due_date: string;
 }
 
 const columns = [
-    
+
     {
-        header: 'Subject', accessor: 'subject', 
+        header: 'Subject', accessor: 'subject',
     },
     {
         header: 'Class', accessor: 'classe', className: 'hidden lg:table-cell',
     },
     {
-        header: 'Teacher', accessor: 'teacher', className:'hidden lg:table-cell',
+        header: 'Teacher', accessor: 'teacher', className: 'hidden lg:table-cell',
     },
     {
-        header: 'Due Date', accessor: 'dueDate', className:'hidden lg:table-cell',
+        header: 'Due Date', accessor: 'dueDate', className: 'hidden lg:table-cell',
     },
     {
         header: 'Actions', accessor: 'action',
@@ -35,27 +36,26 @@ const columns = [
 
 
 const AssignmentsListPage = () => {
-    const renderRow = (item: Assignment) => {  
-      return (
+    const renderRow = (item: Assignment) => {
+        return (
             <tr key={item.id}>
                 <td >{item.subjectName}</td>
                 <td className='hidden md:table-cell'>{item.class}</td>
                 <td className='hidden md:table-cell'>{
-                    teachersData.filter(teacher=>(item.teacherId) === String(teacher.teacherId)).map(ls =>ls.name).join(', ')   
+                    teachersData.filter(teacher => (item.teacherId) === String(teacher.teacherId)).map(ls => ls.name).join(', ')
                 }</td>
                 <td className='hidden md:table-cell'>{item.due_date}</td>
                 <td>
                     <div className='flex items-center gap-2'>
-                        <Link href={`/list/exams/${item.id}`}>
-                            <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                                <Image src="/edit.png" alt='' width={16} height={16} />
-                            </button>
-                        </Link>
+
                         {
                             role === 'admin' && (
-                                <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                                    <Image src="/delete.png" alt='' width={16} height={16} />
-                                </button>
+                                <>
+                                    <Link href={`/list/assignments/${item.id}`}>
+                                        <FormModal table='assignment' type='update' data={item} />
+                                    </Link>
+                                    <FormModal table='assignment' type='delete' id={item.id} />
+                                </>
                             )
                         }
                     </div>
@@ -81,9 +81,7 @@ const AssignmentsListPage = () => {
 
                         {
                             role === 'admin' && (
-                                <button className='w-8 h-8 flex items-center justify-center rounded-full bg-yellow-300'>
-                                    <Image src="/plus.png" alt='' width={14} height={14} />
-                                </button>
+                                <FormModal table='assignment' type='create' />
                             )
                         }
                     </div>

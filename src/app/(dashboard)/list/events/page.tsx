@@ -1,3 +1,4 @@
+import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -38,7 +39,7 @@ const columns = [
 ]
 
 
-const EventsListPage = () => {
+const EventListPage = () => {
     const renderRow = (item: Event) => {  
       return (
             <tr key={item.id}>
@@ -85,9 +86,7 @@ const EventsListPage = () => {
 
                         {
                             role === 'admin' && (
-                                <button className='w-8 h-8 flex items-center justify-center rounded-full bg-yellow-300'>
-                                    <Image src="/plus.png" alt='' width={14} height={14} />
-                                </button>
+                                <FormModal table='event' type='create'/>
                             )
                         }
                     </div>
@@ -103,4 +102,4 @@ const EventsListPage = () => {
     )
 }
 
-export default EventsListPage
+export default EventListPage

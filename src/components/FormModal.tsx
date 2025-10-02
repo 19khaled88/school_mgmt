@@ -1,4 +1,5 @@
 'use client'
+import { FormType, TableName } from '@/helper/type';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React, { JSX, useState } from 'react'
@@ -34,7 +35,11 @@ const forms: { [key: string]: (type: 'create' | 'update', data?: any) => JSX.Ele
 
 }
 
-const FormModal = ({ table, type, data, id }: { table: | "teacher" | "student" | "parent" | "subject" | "class" | "lesson" | "exam" | "assignment" | "result" | "attendance" | "event" | "announcement"; type: 'create' | 'update' | 'delete', data?: any, id?: number }) => {
+type FormModalProps = {
+    table: TableName, type: FormType, data?: any; id?: number | string;
+}
+
+const FormModal = ({ table, type, data, id }: FormModalProps) => {
     const size = type === 'create' ? 'w-8 h-8' : 'w-7 h-7';
     const bgColor = type === "create" ? 'bg-yellow-300' : type === 'update' ? 'bg-blue-300' : 'bg-purple-300'
 

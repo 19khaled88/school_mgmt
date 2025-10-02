@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DB_URL")
 }
 
 // Model start from here
@@ -22,7 +22,7 @@ model Student {
   email     String?  @unique
   phone     String?  @unique
   address   String
-  img       String
+  img       String?
   bloodType String
   sex       UserSex
   createdAt DateTime @default(now())
@@ -45,7 +45,7 @@ model Teacher {
   email     String?   @unique
   phone     String?   @unique
   address   String
-  img       String
+  img       String?
   bloodType String
   sex       UserSex
   createdAt DateTime  @default(now())
@@ -59,8 +59,8 @@ model Parent {
   username  String    @unique
   name      String
   surname   String
-  email     String?
-  phone     String?   @unique
+  email     String?   @unique
+  phone     String    @unique
   address   String
   createdAt DateTime  @default(now())
   students  Student[]
@@ -79,8 +79,8 @@ model Class {
   name     String @unique
   capacity Int
 
-  supervisorId String
-  teachers     Teacher[]
+  supervisorId String?
+  teachers     Teacher? @relation(fields: [teacherId], references: [id])
   lessons      Lesson[]
 
   stdents Student[]
@@ -89,6 +89,7 @@ model Class {
 
   event        Event[]
   announcement Announcement[]
+  teacherId    String?
 }
 
 model Subject {
@@ -191,5 +192,5 @@ enum Day {
   TUESDAY
   WEDNESDAY
   THURSDAY
-  RFIDAY
+  FRIDAY
 }

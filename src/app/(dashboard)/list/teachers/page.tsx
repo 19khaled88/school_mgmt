@@ -2,7 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Class, Subject, Teacher, PrismaClient } from '@/generated/prisma'
+import { Class, Subject, Teacher, PrismaClient, Prisma } from '@/generated/prisma'
 
 
 import { role, teachersData } from '@/lib/data'
@@ -92,9 +92,35 @@ const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string
 
   const p = page ? parseInt(page) : 1;
 
+  // URL PARAMS CONDITION
+
+  const query: Prisma.TeacherWhereInput = {};
+
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (value !== undefined) {
+        switch (key) {
+          case 'classId':
+            query.lessons = {
+              some: {
+                classId: parseInt(value),
+              },
+            };
+            break;
+          case "search":
+            query.name = { contains: value, mode: 'insensitive' }
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
 
   const [data, count] = await prisma.$transaction([
     prisma.teacher.findMany({
+      where: query,
+
       include: {
         subjects: true,
         classes: true
@@ -102,7 +128,7 @@ const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (p - 1),
     }),
-    prisma.teacher.count()
+    prisma.teacher.count({ where: query })
   ])
 
 
@@ -135,7 +161,7 @@ const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string
       {/*LIST*/}
       <Table columns={columns} renderRow={renderRow} data={data} />
       {/*PAGINATION*/}
-      <Pagination page={p} count={count}/>
+      <Pagination page={p} count={count} />
 
     </div>
   )

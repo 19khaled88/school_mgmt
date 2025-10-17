@@ -13,12 +13,12 @@ import React from 'react'
 //     id: number;
 //     name: string;
 //     teachers: string[];
-    
+
 // }
 
-type SubjectList = Subject & {teachers:Teacher[]}
+type SubjectList = Subject & { teachers: Teacher[] }
 const columns = [
-    
+
     {
         header: 'Subjects', accessor: 'names', className: 'hidden md:table-cell',
     },
@@ -36,73 +36,74 @@ const renderRow = (item: SubjectList) => {
     // return item.teachers.map((teacherName, index) => {
     //     const teacher = teachersData.find(s => String(s.name) === String(teacherName));
     //     const teacher_Name = teacher ? teacher.name : 'Unknown';
-        
+
     // })
 
     return (
-            <tr key={`${item.id}`}>
-                <td>
-                    <div className='flex flex-col'>
-                        <h3 className='font-semibold'>{item.name}</h3>
-                        
-                    </div>
-                </td>
-                <td className='hidden md:table-cell'>{
-                    // studentsData.filter(student => item.students.map(String).includes(String(student.id))).map(student => student.name).join(', ') || "No Students"
-                    // teacher_Name
-                    item.teachers.map(teacher=>teacher.name).join(',')
-                }</td>
-                
-                <td>
-                    <div className='flex items-center gap-2'>
-                        <Link href={`/list/subjects/${item.id}`}>
-                            <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                                <Image src="/edit.png" alt='' width={16} height={16} />
+        <tr key={`${item.id}`}>
+            <td>
+                <div className='flex flex-col'>
+                    <h3 className='font-semibold'>{item.name}</h3>
+
+                </div>
+            </td>
+            <td className='hidden md:table-cell'>{
+                // studentsData.filter(student => item.students.map(String).includes(String(student.id))).map(student => student.name).join(', ') || "No Students"
+                // teacher_Name
+                item.teachers.map(teacher => teacher.name).join(',')
+            }</td>
+
+            <td>
+                <div className='flex items-center gap-2'>
+                    <Link href={`/list/subjects/${item.id}`}>
+                        <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
+                            <Image src="/edit.png" alt='' width={16} height={16} />
+                        </button>
+                    </Link>
+                    {
+                        role === 'admin' && (
+                            <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
+                                <Image src="/delete.png" alt='' width={16} height={16} />
                             </button>
-                        </Link>
-                        {
-                            role === 'admin' && (
-                                <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                                    <Image src="/delete.png" alt='' width={16} height={16} />
-                                </button>
-                            )
-                        }
-                    </div>
-                </td>
-            </tr>
-        )
+                        )
+                    }
+                </div>
+            </td>
+        </tr>
+    )
 }
 
-const SubjectListPage = async({searchParams,}:{searchParams:{[key:string]:string | undefined}}) => {
-    const { page, ...queryParams } = searchParams;
-        const p = page ? parseInt(page) : 1;
-    
-        const query: Prisma.SubjectWhereInput = {};
-    
-        if (queryParams) {
-            for (const [key, value] of Object.entries(queryParams)) {
-                if (value !== undefined) {
-                    switch (key) {
-    
-                        case "search":
-                            query.name = { contains: value, mode: 'insensitive' }
-                            break;
-                    }
+const SubjectListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
+    const params = await searchParams;
+    const { page, ...queryParams } = params;
+    const p = page ? parseInt(page) : 1;
+
+    const query: Prisma.SubjectWhereInput = {};
+
+    if (queryParams) {
+        for (const [key, value] of Object.entries(queryParams)) {
+            if (value !== undefined) {
+                switch (key) {
+
+                    case "search":
+                        query.name = { contains: value, mode: 'insensitive' }
+                        break;
                 }
             }
         }
+    }
 
-        const [data, count] = await prisma.$transaction([
-                prisma.subject.findMany({
-                    where: query,
-                    include: {
-                        teachers: true
-                    },
-                    take: ITEM_PER_PAGE,
-                    skip: ITEM_PER_PAGE * (p - 1),
-                }),
-                prisma.subject.count({ where: query })
-            ])
+    const [data, count] = await prisma.$transaction([
+        prisma.subject.findMany({
+            where: query,
+            include: {
+                teachers: true
+            },
+            take: ITEM_PER_PAGE,
+            skip: ITEM_PER_PAGE * (p - 1),
+        }),
+        prisma.subject.count({ where: query })
+    ])
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}
@@ -121,8 +122,8 @@ const SubjectListPage = async({searchParams,}:{searchParams:{[key:string]:string
 
                         {
                             role === 'admin' && (
-                                <FormModal table='subject' type='create'  />
-                                
+                                <FormModal table='subject' type='create' />
+
                             )
                         }
                     </div>
@@ -132,7 +133,7 @@ const SubjectListPage = async({searchParams,}:{searchParams:{[key:string]:string
             {/*LIST*/}
             <Table columns={columns} renderRow={renderRow} data={data} />
             {/*PAGINATION*/}
-            <Pagination page={p} count={count}/>
+            <Pagination page={p} count={count} />
 
         </div>
     )

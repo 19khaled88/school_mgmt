@@ -38,7 +38,7 @@ const columns = [
 
 
 const renderRow = (item: LessonList) => {
-  console.log(item)
+
     return (
         <tr key={item.id}>
             <td>{
@@ -72,7 +72,8 @@ const renderRow = (item: LessonList) => {
 }
 const LessonListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
-    const { page, ...queryParams } = searchParams;
+    const params = await searchParams;
+    const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.LessonWhereInput = {};

@@ -2,6 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
+import { Prisma, PrismaClient } from '@/generated/prisma'
 import { eventsData, examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,63 +12,83 @@ type Event = {
     id: number;
     title: string;
     class: string;
-    date:string;
-    startTime:string;
-    endTime:string;
+    date: string;
+    startTime: string;
+    endTime: string;
 }
 
+const prisma = new PrismaClient();
 const columns = [
-    
+
     {
-        header: 'Title', accessor: 'title', 
+        header: 'Title', accessor: 'title',
     },
     {
-        header: 'Class', accessor: 'classe', 
+        header: 'Class', accessor: 'classe',
     },
     {
-        header: 'Date', accessor: 'dates', className:'hidden lg:table-cell',
+        header: 'Date', accessor: 'dates', className: 'hidden lg:table-cell',
     },
     {
-        header: 'Start Date', accessor: 'startDate', className:'hidden lg:table-cell',
+        header: 'Start Date', accessor: 'startDate', className: 'hidden lg:table-cell',
     },
-     {
-        header: 'End Date', accessor: 'endDate', className:'hidden lg:table-cell',
+    {
+        header: 'End Date', accessor: 'endDate', className: 'hidden lg:table-cell',
     },
     {
         header: 'Actions', accessor: 'action',
     }
 ]
 
+const renderRow = (item: Event) => {
+    return (
+        <tr key={item.id}>
+            <td>{item.title}</td>
+            <td>{item.class}</td>
+            <td className='hidden md:table-cell'>{item.date}</td>
+            <td className='hidden md:table-cell'>{item.startTime}</td>
+            <td className='hidden md:table-cell'>{item.endTime}</td>
 
-const EventListPage = () => {
-    const renderRow = (item: Event) => {  
-      return (
-            <tr key={item.id}>
-                <td>{item.title}</td>
-                <td>{item.class}</td>
-                <td className='hidden md:table-cell'>{item.date}</td>
-                <td className='hidden md:table-cell'>{item.startTime}</td>
-                <td className='hidden md:table-cell'>{item.endTime}</td>
-                
-                <td>
-                    <div className='flex items-center gap-2'>
-                        <Link href={`/list/exams/${item.id}`}>
-                            <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                                <Image src="/edit.png" alt='' width={16} height={16} />
+            <td>
+                <div className='flex items-center gap-2'>
+                    <Link href={`/list/exams/${item.id}`}>
+                        <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
+                            <Image src="/edit.png" alt='' width={16} height={16} />
+                        </button>
+                    </Link>
+                    {
+                        role === 'admin' && (
+                            <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
+                                <Image src="/delete.png" alt='' width={16} height={16} />
                             </button>
-                        </Link>
-                        {
-                            role === 'admin' && (
-                                <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                                    <Image src="/delete.png" alt='' width={16} height={16} />
-                                </button>
-                            )
-                        }
-                    </div>
-                </td>
-            </tr>
-        )
+                        )
+                    }
+                </div>
+            </td>
+        </tr>
+    )
+}
+
+const EventListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
+
+
+    const params = await searchParams;
+    const { page, ...queryParams } = params;
+    const p = page ? parseInt(page) : 1;
+
+    const query: Prisma.EventWhereInput = {};
+
+    if (queryParams) {
+
     }
+
+    const [data, count] = await prisma.$transaction([
+        prisma.exam.findMany({
+
+        }),
+        prisma.event.count({ where: query })
+    ])
+
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}
@@ -86,7 +107,7 @@ const EventListPage = () => {
 
                         {
                             role === 'admin' && (
-                                <FormModal table='event' type='create'/>
+                                <FormModal table='event' type='create' />
                             )
                         }
                     </div>
@@ -96,7 +117,7 @@ const EventListPage = () => {
             {/*LIST*/}
             <Table columns={columns} renderRow={renderRow} data={eventsData} />
             {/*PAGINATION*/}
-            <Pagination />
+            <Pagination page={p} count={count} />
 
         </div>
     )

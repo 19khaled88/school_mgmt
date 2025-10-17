@@ -22,7 +22,7 @@ import React from 'react'
 // }
 
 const prisma = new PrismaClient()
-type StudnetList = Student & {attendances : Attendance[]} & {resultes: Result[]} & {Class:Class[]}
+type StudnetList = Student & { attendances: Attendance[] } & { resultes: Result[] } & { Class: Class[] }
 
 const columns = [
     {
@@ -61,14 +61,14 @@ const renderRow = (item: StudnetList) => {
                     <p className='text-xs text-gray-500'>{item.Class[0]?.name}</p>
                 </div>
             </td>
-           
+
             <td className='hidden md:table-cell'>{item.username}</td>
             <td className='hidden md:table-cell'>{item.sex}</td>
             <td className='hidden md:table-cell'>{item.phone}</td>
             <td className='hidden md:table-cell'>{item.address}</td>
-            <td className='hidden md:table-cell'>{item.attendances.map(attendance=>attendance.present).join(',')}</td>
+            <td className='hidden md:table-cell'>{item.attendances.map(attendance => attendance.present).join(',')}</td>
 
-            <td className='hidden md:table-cell'>{item.resultes.map(result=>result.score).join(',')}</td>
+            <td className='hidden md:table-cell'>{item.resultes.map(result => result.score).join(',')}</td>
             <td>
                 <div className='flex items-center gap-2'>
                     <Link href={`/list/students/${item.id}`}>
@@ -78,7 +78,7 @@ const renderRow = (item: StudnetList) => {
                     </Link>
                     {
                         role === 'admin' && (
-                            <FormModal table='student' type='delete' id={item.id}/>
+                            <FormModal table='student' type='delete' id={item.id} />
                         )
                     }
                 </div>
@@ -86,51 +86,52 @@ const renderRow = (item: StudnetList) => {
         </tr>
     )
 }
-const StudentListPage = async({searchParams,}:{searchParams:{[key:string]: string | undefined}}) => {
-    const {page, ...queryParams} = searchParams
+const StudentListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
+    const params = await searchParams;
+    const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.StudentWhereInput = {};
-    
-      if (queryParams) {
+
+    if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
-          if (value !== undefined) {
-            switch (key) {
-              case 'teacherId':
+            if (value !== undefined) {
+                switch (key) {
+                    case 'teacherId':
 
-                query.Class = {
-                    lessons:{
-                        some: {
-                          teacherId: value,
-                        },
-                    }
-                };
-                break;
-              case "search":
+                        query.Class = {
+                            lessons: {
+                                some: {
+                                    teacherId: value,
+                                },
+                            }
+                        };
+                        break;
+                    case "search":
 
-                query.name = { contains: value, mode: 'insensitive' }
-                break;
-              default:
-                break;
-                
-            
+                        query.name = { contains: value, mode: 'insensitive' }
+                        break;
+                    default:
+                        break;
+
+
+                }
             }
-          }
         }
-      }
+    }
 
-    const [data,count] =await prisma.$transaction([
+    const [data, count] = await prisma.$transaction([
         prisma.student.findMany({
-            where:query,
-            include:{
-                Class:true,
-                attendances:true,
-                resultes:true
+            where: query,
+            include: {
+                Class: true,
+                attendances: true,
+                resultes: true
             },
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1),
         }),
-        prisma.student.count({where:query})
+        prisma.student.count({ where: query })
     ]);
 
 
@@ -162,7 +163,7 @@ const StudentListPage = async({searchParams,}:{searchParams:{[key:string]: strin
             {/*LIST*/}
             <Table columns={columns} renderRow={renderRow} data={data} />
             {/*PAGINATION*/}
-            <Pagination page={p} count={count}/>
+            <Pagination page={p} count={count} />
 
         </div>
     )

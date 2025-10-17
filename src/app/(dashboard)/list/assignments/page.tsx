@@ -2,6 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
+import { Prisma, PrismaClient } from '@/generated/prisma'
 import { assignmentsData, examsData, lessonsData, role, teachersData } from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,6 +16,7 @@ type Assignment = {
     due_date: string;
 }
 
+const prisma = new PrismaClient();
 const columns = [
 
     {
@@ -34,35 +36,53 @@ const columns = [
     }
 ]
 
+const renderRow = (item: Assignment) => {
+    return (
+        <tr key={item.id}>
+            <td >{item.subjectName}</td>
+            <td className='hidden md:table-cell'>{item.class}</td>
+            <td className='hidden md:table-cell'>{
+                teachersData.filter(teacher => (item.teacherId) === String(teacher.teacherId)).map(ls => ls.name).join(', ')
+            }</td>
+            <td className='hidden md:table-cell'>{item.due_date}</td>
+            <td>
+                <div className='flex items-center gap-2'>
 
-const AssignmentsListPage = () => {
-    const renderRow = (item: Assignment) => {
-        return (
-            <tr key={item.id}>
-                <td >{item.subjectName}</td>
-                <td className='hidden md:table-cell'>{item.class}</td>
-                <td className='hidden md:table-cell'>{
-                    teachersData.filter(teacher => (item.teacherId) === String(teacher.teacherId)).map(ls => ls.name).join(', ')
-                }</td>
-                <td className='hidden md:table-cell'>{item.due_date}</td>
-                <td>
-                    <div className='flex items-center gap-2'>
+                    {
+                        role === 'admin' && (
+                            <>
+                                <Link href={`/list/assignments/${item.id}`}>
+                                    <FormModal table='assignment' type='update' data={item} />
+                                </Link>
+                                <FormModal table='assignment' type='delete' id={item.id} />
+                            </>
+                        )
+                    }
+                </div>
+            </td>
+        </tr>
+    )
+}
 
-                        {
-                            role === 'admin' && (
-                                <>
-                                    <Link href={`/list/assignments/${item.id}`}>
-                                        <FormModal table='assignment' type='update' data={item} />
-                                    </Link>
-                                    <FormModal table='assignment' type='delete' id={item.id} />
-                                </>
-                            )
-                        }
-                    </div>
-                </td>
-            </tr>
-        )
+const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
+
+    const params = await searchParams;
+    const { page, ...queryParams } = params;
+    const p = page ? parseInt(page) : 1;
+
+    const query: Prisma.AssignmentWhereInput = {};
+
+    if (queryParams) {
+
     }
+
+    const [data, count] = await prisma.$transaction([
+        prisma.exam.findMany({
+
+        }),
+        prisma.assignment.count({ where: query })
+    ])
+
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}
@@ -91,7 +111,7 @@ const AssignmentsListPage = () => {
             {/*LIST*/}
             <Table columns={columns} renderRow={renderRow} data={assignmentsData} />
             {/*PAGINATION*/}
-            <Pagination />
+            <Pagination page={p} count={count} />
 
         </div>
     )

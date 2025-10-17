@@ -32,7 +32,7 @@ type ClassList = {
     announcements: Announcement[]
     lessons: Lesson[]
     students: Student[]
-    
+
 }
 
 const columns = [
@@ -55,7 +55,7 @@ const columns = [
 
 
 const renderRow = (item: ClassList) => {
-    console.log(item)
+
     return (
         <tr key={`${item.id}`}>
             <td >{item.name}</td>
@@ -81,7 +81,8 @@ const renderRow = (item: ClassList) => {
     )
 }
 const ClassesListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
-    const { page, ...queryParams } = searchParams
+    const params = await searchParams;
+    const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.ClassWhereInput = {};
@@ -118,7 +119,7 @@ const ClassesListPage = async ({ searchParams, }: { searchParams: { [key: string
                         surname: true
                     }
                 },
-                
+
                 grade: {
                     select: {
                         id: true,

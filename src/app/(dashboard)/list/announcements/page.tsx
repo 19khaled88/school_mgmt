@@ -2,6 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
+import { Prisma, PrismaClient } from '@/generated/prisma'
 import { annoucementsData, eventsData, examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,6 +15,7 @@ type Event = {
     date: string;
 }
 
+const prisma = new PrismaClient();
 const columns = [
 
     {
@@ -30,32 +32,50 @@ const columns = [
     }
 ]
 
+const renderRow = (item: Event) => {
+    return (
+        <tr key={item.id}>
+            <td>{item.title}</td>
+            <td>{item.class}</td>
+            <td className='hidden md:table-cell'>{item.date}</td>
+            <td>
+                <div className='flex items-center gap-2'>
 
-const AnnouncementsListPage = () => {
-    const renderRow = (item: Event) => {
-        return (
-            <tr key={item.id}>
-                <td>{item.title}</td>
-                <td>{item.class}</td>
-                <td className='hidden md:table-cell'>{item.date}</td>
-                <td>
-                    <div className='flex items-center gap-2'>
+                    {
+                        role === 'admin' && (
+                            <>
+                                <Link href={`/list/announcements/${item.id}`}>
+                                    <FormModal table='announcement' type='update' data={item} />
+                                </Link>
+                                <FormModal table='announcement' type='delete' id={item.id} />
+                            </>
+                        )
+                    }
+                </div>
+            </td>
+        </tr>
+    )
+}
 
-                        {
-                            role === 'admin' && (
-                                <>
-                                    <Link href={`/list/announcements/${item.id}`}>
-                                        <FormModal table='announcement' type='update' data={item} />
-                                    </Link>
-                                    <FormModal table='announcement' type='delete' id={item.id} />
-                                </>
-                            )
-                        }
-                    </div>
-                </td>
-            </tr>
-        )
+const AnnouncementsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
+
+
+    const params = await searchParams;
+    const { page, ...queryParams } = params;
+    const p = page ? parseInt(page) : 1;
+
+    const query: Prisma.AnnouncementWhereInput = {};
+
+    if (queryParams) {
+
     }
+
+    const [data, count] = await prisma.$transaction([
+        prisma.exam.findMany({
+
+        }),
+        prisma.announcement.count({ where: query })
+    ])
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}
@@ -87,7 +107,7 @@ const AnnouncementsListPage = () => {
             {/*LIST*/}
             <Table columns={columns} renderRow={renderRow} data={annoucementsData} />
             {/*PAGINATION*/}
-            <Pagination />
+            <Pagination page={p} count={count} />
 
         </div>
     )

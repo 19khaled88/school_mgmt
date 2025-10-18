@@ -4,6 +4,7 @@ import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
 import { Prisma, PrismaClient } from '@/generated/prisma'
 import { examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
+import { ITEM_PER_PAGE } from '@/lib/herlper'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -84,16 +85,28 @@ const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string
     const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
+    // optional filters an sorting logic 
     const query: Prisma.ResultWhereInput = {};
+    const sort: any = [
+        {updatedAt:'desc'},
+        {createdAt:'desc'}
+    ]
 
-
-    if (queryParams) { 
+    if (queryParams) {
 
     }
 
-    const [data, count] = await prisma.$transaction([ 
+    const [data, count] = await prisma.$transaction([
         prisma.result.findMany({
-
+            where: query,
+            skip: ITEM_PER_PAGE * (p - 1),
+            take: ITEM_PER_PAGE,
+            orderBy: sort,
+            include: {
+                exam: true,
+                assignment: true,
+                student: true,
+            }
         }),
         prisma.result.count({ where: query })
     ])
@@ -123,9 +136,9 @@ const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string
             </div>
 
             {/*LIST*/}
-            <Table columns={columns} renderRow={renderRow} data={resultsData} />
+            <Table columns={columns} renderRow={renderRow} data={data} />
             {/*PAGINATION*/}
-            <Pagination page={p} count={count}/>
+            <Pagination page={p} count={count} />
 
         </div>
     )

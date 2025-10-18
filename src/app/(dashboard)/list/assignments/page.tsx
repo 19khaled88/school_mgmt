@@ -4,16 +4,28 @@ import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
 import { Prisma, PrismaClient } from '@/generated/prisma'
 import { assignmentsData, examsData, lessonsData, role, teachersData } from '@/lib/data'
+import { ITEM_PER_PAGE } from '@/lib/herlper'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 type Assignment = {
     id: number;
-    subjectName: string;
-    class: string;
+    title: string;
+
     teacherId: string;
-    due_date: string;
+    dueDate: string;
+
+
+    lessonId?: number;
+    lesson?: {
+        id: number;
+        teacherId: string;
+        class: {
+            id: string;
+            name: string;
+        };
+    }
 }
 
 const prisma = new PrismaClient();
@@ -37,14 +49,17 @@ const columns = [
 ]
 
 const renderRow = (item: Assignment) => {
+    
     return (
         <tr key={item.id}>
-            <td >{item.subjectName}</td>
-            <td className='hidden md:table-cell'>{item.class}</td>
+            <td >{item.title}</td>
+            <td className='hidden md:table-cell'>{item.lesson?.class.name}</td>
             <td className='hidden md:table-cell'>{
-                teachersData.filter(teacher => (item.teacherId) === String(teacher.teacherId)).map(ls => ls.name).join(', ')
+
+                item.lesson?.teacherId
+
             }</td>
-            <td className='hidden md:table-cell'>{item.due_date}</td>
+            <td className='hidden md:table-cell'>{new Date(item.dueDate).toLocaleDateString()}</td>
             <td>
                 <div className='flex items-center gap-2'>
 
@@ -70,18 +85,37 @@ const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: st
     const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
+    // optional filters an sorting logic 
     const query: Prisma.AssignmentWhereInput = {};
+    const sort: any = [
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' }
+    ]
 
     if (queryParams) {
 
     }
 
     const [data, count] = await prisma.$transaction([
-        prisma.exam.findMany({
-
+        prisma.assignment.findMany({
+            where: query,
+            skip: ITEM_PER_PAGE * (p - 1),
+            take: ITEM_PER_PAGE,
+            orderBy: sort,
+            include: {
+                lesson: {
+                    include: {
+                        class: true
+                    }
+                    
+                },
+                results: true
+            }
         }),
         prisma.assignment.count({ where: query })
     ])
+
+
 
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
@@ -109,7 +143,7 @@ const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: st
             </div>
 
             {/*LIST*/}
-            <Table columns={columns} renderRow={renderRow} data={assignmentsData} />
+            <Table columns={columns} renderRow={renderRow} data={data} />
             {/*PAGINATION*/}
             <Pagination page={p} count={count} />
 

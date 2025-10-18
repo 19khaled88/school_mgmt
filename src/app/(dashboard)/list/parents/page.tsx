@@ -48,9 +48,11 @@ const renderRow = (item: ParentList) => {
 
     // })
 
-
+    
+    
     return (
         <tr key={`${item.id}`}>
+
             <td>
                 <div className='flex flex-col'>
                     <h3 className='font-semibold'>{item.name}</h3>
@@ -60,7 +62,15 @@ const renderRow = (item: ParentList) => {
             <td className='hidden md:table-cell'>{
                 // studentsData.filter(student => item.students.map(String).includes(String(student.id))).map(student => student.name).join(', ') || "No Students"
                 // studentName
-                item.students.map(student => student.name).join(',')
+                // item.students. parent.student
+
+
+                // parentsData.filter(parent => parent.id === item.id).flatMap(parent => parent.students).map(studentId => {
+                //     const student = studentsData.find(s => String(s.id) === String(studentId));
+                //     return student ? student.name : 'Unknown';
+                // }).join(', ') || "No Students"
+
+                
             }</td>
             <td className='hidden md:table-cell'>{item.phone}</td>
             <td className='hidden md:table-cell'>{item.address}</td>
@@ -90,6 +100,10 @@ const ParentListPage = async ({ searchParams, }: { searchParams: { [key: string]
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.ParentWhereInput = {};
+    const sort: any = [
+        {updatedAt:'desc'},
+        {createdAt:'desc'}
+    ]
 
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
@@ -109,15 +123,15 @@ const ParentListPage = async ({ searchParams, }: { searchParams: { [key: string]
     const [data, count] = await prisma.$transaction([
         prisma.parent.findMany({
             where: query,
-            include: {
-                students: true
-            },
+            include: { students: true},
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1),
+            orderBy: sort,
         }),
         prisma.parent.count({ where: query })
     ])
 
+ 
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}

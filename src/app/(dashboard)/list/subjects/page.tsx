@@ -79,6 +79,10 @@ const SubjectListPage = async ({ searchParams, }: { searchParams: { [key: string
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.SubjectWhereInput = {};
+    const sort: any = [
+        {updatedAt:'desc'},
+        {createdAt:'desc'}
+    ]
 
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
@@ -101,6 +105,7 @@ const SubjectListPage = async ({ searchParams, }: { searchParams: { [key: string
             },
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1),
+            orderBy: sort,
         }),
         prisma.subject.count({ where: query })
     ])

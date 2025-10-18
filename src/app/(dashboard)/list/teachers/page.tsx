@@ -96,6 +96,10 @@ const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string
   // URL PARAMS CONDITION
 
   const query: Prisma.TeacherWhereInput = {};
+  const sort: any = [
+        {updatedAt:'desc'},
+        {createdAt:'desc'}
+    ]
 
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
@@ -128,6 +132,7 @@ const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string
       },
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (p - 1),
+      orderBy: sort,
     }),
     prisma.teacher.count({ where: query })
   ])

@@ -2,21 +2,23 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Prisma, PrismaClient } from '@/generated/prisma'
+import { Class, Event, Prisma, PrismaClient } from '@/generated/prisma'
 import { eventsData, examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Event = {
-    id: number;
-    title: string;
-    class: string;
-    date: string;
-    startTime: string;
-    endTime: string;
-}
+// type Event = {
+//     id: number;
+//     title: string;
+//     class: string;
+//     date: string;
+//     startTime: string;
+//     endTime: string;
+// }
+
+type EventList = Event & { Class: Class }
 
 const prisma = new PrismaClient();
 const columns = [
@@ -25,7 +27,7 @@ const columns = [
         header: 'Title', accessor: 'title',
     },
     {
-        header: 'Class', accessor: 'classe',
+        header: 'Class', accessor: 'class',
     },
     {
         header: 'Date', accessor: 'dates', className: 'hidden lg:table-cell',
@@ -41,14 +43,23 @@ const columns = [
     }
 ]
 
-const renderRow = (item: Event) => {
+const renderRow = (item: EventList) => {
+
     return (
         <tr key={item.id}>
             <td>{item.title}</td>
-            <td>{item.class}</td>
-            <td className='hidden md:table-cell'>{item.date}</td>
-            <td className='hidden md:table-cell'>{item.startTime}</td>
-            <td className='hidden md:table-cell'>{item.endTime}</td>
+            <td>{item.Class.name}</td>
+            <td className='hidden md:table-cell'>{new Intl.DateTimeFormat('en-US').format(new Date(item.startTime))}</td>
+            <td className='hidden md:table-cell'>{item.startTime.toLocaleTimeString("en-US", {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+            })}</td>
+            <td className='hidden md:table-cell'>{item.endTime.toLocaleTimeString("en-US", {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+            })}</td>
 
             <td>
                 <div className='flex items-center gap-2'>
@@ -80,22 +91,40 @@ const EventListPage = async ({ searchParams, }: { searchParams: { [key: string]:
     // optional filters an sorting logic
     const query: Prisma.EventWhereInput = {};
     const sort: any = [
-        {updatedAt:'desc'},
-        {createdAt:'desc'}
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' }
     ]
 
     if (queryParams) {
-
+        for (const [key, value] of Object.entries(queryParams)) {
+            if (value !== undefined) {
+                switch (key) {
+                    case 'search':
+                        query.OR = [
+                            { title: { contains: value, mode: 'insensitive' } },
+                            { Class: { name: { contains: value, mode: 'insensitive' } } },
+                        ];
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
+   
 
     const [data, count] = await prisma.$transaction([
         prisma.event.findMany({
             where: query,
-            skip:ITEM_PER_PAGE * (p - 1),
+            skip: ITEM_PER_PAGE * (p - 1),
             take: ITEM_PER_PAGE,
             orderBy: sort,
-            include:{
-                Class:true
+            include: {
+                Class: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         }),
         prisma.event.count({ where: query })

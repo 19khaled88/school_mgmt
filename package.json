@@ -29,6 +29,8 @@
     "prisma:seed": "prisma db seed"
   },
   "dependencies": {
+    "@clerk/elements": "^0.23.73",
+    "@clerk/nextjs": "^6.33.7",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.16.3",
     "moment": "^2.30.1",

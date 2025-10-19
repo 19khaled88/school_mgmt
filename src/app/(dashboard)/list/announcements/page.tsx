@@ -2,19 +2,14 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Prisma, PrismaClient } from '@/generated/prisma'
+import { Announcement, Class, Prisma, PrismaClient } from '@/generated/prisma'
 import { annoucementsData, eventsData, examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Event = {
-    id: number;
-    title: string;
-    class: string;
-    date: string;
-}
+type AnnounceType = Announcement & { Class: Class }
 
 const prisma = new PrismaClient();
 const columns = [
@@ -33,12 +28,12 @@ const columns = [
     }
 ]
 
-const renderRow = (item: Event) => {
+const renderRow = (item: AnnounceType) => {
     return (
         <tr key={item.id}>
             <td>{item.title}</td>
-            <td>{item.class}</td>
-            <td className='hidden md:table-cell'>{item.date}</td>
+            <td>{item.Class.name}</td>
+            <td className='hidden md:table-cell'>{new Intl.DateTimeFormat('en-US').format(new Date(item.date))}</td>
             <td>
                 <div className='flex items-center gap-2'>
 
@@ -68,12 +63,25 @@ const AnnouncementsListPage = async ({ searchParams, }: { searchParams: { [key: 
     // optional filters an sorting logic 
     const query: Prisma.AnnouncementWhereInput = {};
     const sort: any = [
-        {updatedAt:'desc'},
-        {createdAt:'desc'}
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' }
     ]
 
     if (queryParams) {
-
+        for (const [key, value] of Object.entries(queryParams)) {
+            if (value !== undefined) {
+                switch (key) {
+                    case 'search':
+                        query.OR = [
+                            { title: { contains: value, mode: 'insensitive' } },
+                            { Class: { name: { contains: value, mode: 'insensitive' } } },
+                        ];
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     const [data, count] = await prisma.$transaction([
@@ -83,7 +91,11 @@ const AnnouncementsListPage = async ({ searchParams, }: { searchParams: { [key: 
             take: ITEM_PER_PAGE,
             orderBy: sort,
             include: {
-                Class: true,
+                Class: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         }),
         prisma.announcement.count({ where: query })

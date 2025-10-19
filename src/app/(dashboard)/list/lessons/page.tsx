@@ -49,7 +49,7 @@ const renderRow = (item: LessonList) => {
             }</td>
             <td className='hidden md:table-cell'>{
                 // teachersData.filter(teacher=>(item.teacherId) === String(teacher.id)).map(ls =>ls.name).join(', ') 
-                item.teacherId
+                item.teacher.name + ' ' + item.teacher.surname
             }</td>
             <td>
                 <div className='flex items-center gap-2'>
@@ -70,6 +70,7 @@ const renderRow = (item: LessonList) => {
         </tr>
     )
 }
+
 const LessonListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
     const params = await searchParams;
@@ -123,6 +124,11 @@ const LessonListPage = async ({ searchParams, }: { searchParams: { [key: string]
                         name: true
                     }
                 },
+                teacher:{select:{
+                    id:true,
+                    name:true,
+                    surname:true
+                }}
 
             },
             take: ITEM_PER_PAGE,

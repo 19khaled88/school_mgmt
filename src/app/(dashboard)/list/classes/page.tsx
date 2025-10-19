@@ -56,7 +56,7 @@ const columns = [
 
 const renderRow = (item: ClassList) => {
 
-    console.log(item)
+    
     return (
         <tr key={`${item.id}`}>
             <td >{item.name}</td>

@@ -2,25 +2,20 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Prisma, PrismaClient } from '@/generated/prisma'
+import { Class, Exam, Prisma, PrismaClient, Subject, Teacher } from '@/generated/prisma'
 import { examsData, lessonsData, role, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Exam = {
-    id: number;
-    subjectName: string;
-    class: string;
-    teacherId: string;
-    date: string;
-    lesson:{
-        subject:{name:string};
-        class:{name:string};
-        teacher:{name:string};
-    } | null;
 
+type ExamList = Exam & {
+    lesson: {
+        subject: Subject;
+        class: Class;
+        teacher: Teacher;
+    }
 }
 
 const prisma = new PrismaClient();
@@ -43,19 +38,23 @@ const columns = [
     }
 ]
 
-const renderRow = (item: Exam) => {
-    
+const renderRow = (item: ExamList) => {
+
     return (
         <tr key={item.id}>
             <td>{
-            item.lesson?.subject.name
+                item.lesson?.subject.name
             }</td>
             <td className='hidden md:table-cell'>{item.lesson?.class.name}</td>
             <td className='hidden md:table-cell'>{
                 item.lesson?.teacher.name
                 // teachersData.filter(teacher => (item.teacherId) === String(teacher.teacherId)).map(ls => ls.name).join(', ')
             }</td>
-            <td className='hidden md:table-cell'>{item.date}</td>
+            <td className='hidden md:table-cell'>{
+                // new Date(item.startTime).toLocaleDateString()} - {new Date(item.endTime).toLocaleDateString()
+                new Intl.DateTimeFormat('en-US').format(new Date(item.startTime))
+            }</td>
+
             <td>
                 <div className='flex items-center gap-2'>
                     <Link href={`/list/exams/${item.id}`}>
@@ -82,29 +81,58 @@ const ExamsListPage = async ({ searchParams, }: { searchParams: { [key: string]:
     const params = await searchParams;
     const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
-    
+
     // optional filters an sorting logic 
     const query: Prisma.ExamWhereInput = {};
     const sort: any = [
-        {updatedAt:'desc'},
-        {createdAt:'desc'}
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' }
     ]
 
     if (queryParams) {
-
+        for (const [key, value] of Object.entries(queryParams)) {
+            if (value !== undefined) {
+                switch (key) {
+                    case 'classId':
+                        query.lesson = {
+                            classId: parseInt(value)
+                        };
+                        break;
+                    case 'teacherId':
+                        query.lesson = {
+                            teacherId: value
+                        };
+                        break;
+                    case "search":
+                        query.lesson = {
+                            subject: {
+                                name: { contains: value, mode: 'insensitive' }
+                            }
+                        };
+                        break;
+                    default:
+                        break;  
+                }
+            }
+        }
     }
 
     const [data, count] = await prisma.$transaction([
         prisma.exam.findMany({
             where: query,
-            skip:ITEM_PER_PAGE * (p - 1),
+            skip: ITEM_PER_PAGE * (p - 1),
             take: ITEM_PER_PAGE,
             orderBy: sort,
-            include:{
-                lesson:{
-                    include:{subject:true,class:true,teacher:true}
+            include: {
+                lesson: {
+                    // include:{subject:true,class:true,teacher:true}
+                    select: {
+                        subject: { select: { name: true } },
+                        class: { select: { name: true } },
+                        teacher: { select: { name: true, surname: true } },
+                    }
                 },
-                results:true
+                results: true
             }
         }),
         prisma.exam.count({ where: query })

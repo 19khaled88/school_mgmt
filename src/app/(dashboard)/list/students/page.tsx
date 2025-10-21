@@ -5,6 +5,7 @@ import TableSearch from '@/components/TableSearch'
 import { Attendance, Class, Prisma, PrismaClient, Result, Student } from '@/generated/prisma'
 import { role, studentsData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -51,7 +52,10 @@ const columns = [
     }
 ]
 
-const renderRow = (item: StudnetList) => {
+const renderRow = async (item: StudnetList) => {
+    // Usage in your component
+    const role = await getRole();
+
     return (
         <tr key={item.id}>
             <td>
@@ -87,14 +91,17 @@ const renderRow = (item: StudnetList) => {
     )
 }
 const StudentListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
+    // Usage in your component
+    const role = await getRole();
+
     const params = await searchParams;
     const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.StudentWhereInput = {};
     const sort: any = [
-        {updatedAt:'desc'},
-        {createdAt:'desc'}
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' }
     ]
 
     if (queryParams) {

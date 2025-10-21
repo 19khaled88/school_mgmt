@@ -3,30 +3,12 @@ import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
 import { Assignment, Class, Prisma, PrismaClient, Subject, Teacher } from '@/generated/prisma'
-import { assignmentsData, examsData, lessonsData, role, teachersData } from '@/lib/data'
+import { assignmentsData, examsData, lessonsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-
-// type Assignment = {
-//     id: number;
-//     title: string;
-
-//     teacherId: string;
-//     dueDate: string;
-
-
-//     lessonId?: number;
-//     lesson?: {
-//         id: number;
-//         teacherId: string;
-//         class: {
-//             id: string;
-//             name: string;
-//         };
-//     }
-// }
 
 type AssignmentList = Assignment & {
     lesson: {
@@ -55,8 +37,10 @@ const columns = [
     }
 ]
 
-const renderRow = (item: AssignmentList) => {
-    
+const renderRow = async(item: AssignmentList) => {
+    // Usage in your component
+    const role = await getRole();
+
     return (
         <tr key={item.id}>
             <td >{item.lesson.subject.name}</td>
@@ -83,6 +67,9 @@ const renderRow = (item: AssignmentList) => {
 }
 
 const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
+
+    // Usage in your component
+    const role = await getRole();
 
     const params = await searchParams;
     const { page, ...queryParams } = params;

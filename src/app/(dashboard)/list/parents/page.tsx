@@ -5,6 +5,7 @@ import TableSearch from '@/components/TableSearch'
 import { Parent, Prisma, PrismaClient, Student } from '@/generated/prisma'
 import { parentsData, role, studentsData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -40,7 +41,7 @@ const columns = [
 
 const prisma = new PrismaClient();
 
-const renderRow = (item: ParentList) => {
+const renderRow = async (item: ParentList) => {
     // return item.students.map((studentId, index) => {
     //     const student = studentsData.find(s => String(s.id) === String(studentId));
     //     const studentName = student ? student.name : 'Unknown';
@@ -48,8 +49,9 @@ const renderRow = (item: ParentList) => {
 
     // })
 
-    
-    
+    // Usage in your component
+    const role = await getRole();
+
     return (
         <tr key={`${item.id}`}>
 
@@ -70,7 +72,7 @@ const renderRow = (item: ParentList) => {
                 //     return student ? student.name : 'Unknown';
                 // }).join(', ') || "No Students"
 
-                
+
             }</td>
             <td className='hidden md:table-cell'>{item.phone}</td>
             <td className='hidden md:table-cell'>{item.address}</td>
@@ -95,14 +97,17 @@ const renderRow = (item: ParentList) => {
 
 const ParentListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
+    // Usage in your component
+    const role = await getRole();
+
     const params = await searchParams;
     const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.ParentWhereInput = {};
     const sort: any = [
-        {updatedAt:'desc'},
-        {createdAt:'desc'}
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' }
     ]
 
     if (queryParams) {
@@ -123,7 +128,7 @@ const ParentListPage = async ({ searchParams, }: { searchParams: { [key: string]
     const [data, count] = await prisma.$transaction([
         prisma.parent.findMany({
             where: query,
-            include: { students: true},
+            include: { students: true },
             take: ITEM_PER_PAGE,
             skip: ITEM_PER_PAGE * (p - 1),
             orderBy: sort,
@@ -131,7 +136,7 @@ const ParentListPage = async ({ searchParams, }: { searchParams: { [key: string]
         prisma.parent.count({ where: query })
     ])
 
- 
+
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}

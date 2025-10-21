@@ -5,6 +5,7 @@ import TableSearch from '@/components/TableSearch'
 import { Prisma, Lesson, PrismaClient, Subject, Class, Teacher } from '@/generated/prisma'
 import { lessonsData, role, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -37,7 +38,10 @@ const columns = [
 ]
 
 
-const renderRow = (item: LessonList) => {
+const renderRow = async (item: LessonList) => {
+
+    // Usage in your component
+    const role = await getRole();
 
     return (
         <tr key={item.id}>
@@ -73,14 +77,17 @@ const renderRow = (item: LessonList) => {
 
 const LessonListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
+    // Usage in your component
+    const role = await getRole();
+
     const params = await searchParams;
     const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.LessonWhereInput = {};
     const sort: any = [
-        {updatedAt:'desc'},
-        {createdAt:'desc'}
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' }
     ]
 
     if (queryParams) {
@@ -124,11 +131,13 @@ const LessonListPage = async ({ searchParams, }: { searchParams: { [key: string]
                         name: true
                     }
                 },
-                teacher:{select:{
-                    id:true,
-                    name:true,
-                    surname:true
-                }}
+                teacher: {
+                    select: {
+                        id: true,
+                        name: true,
+                        surname: true
+                    }
+                }
 
             },
             take: ITEM_PER_PAGE,

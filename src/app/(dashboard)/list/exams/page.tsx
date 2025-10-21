@@ -5,6 +5,7 @@ import TableSearch from '@/components/TableSearch'
 import { Class, Exam, Prisma, PrismaClient, Subject, Teacher } from '@/generated/prisma'
 import { examsData, lessonsData, role, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -38,7 +39,9 @@ const columns = [
     }
 ]
 
-const renderRow = (item: ExamList) => {
+const renderRow = async (item: ExamList) => {
+    // Usage in your component
+    const role = await getRole();
 
     return (
         <tr key={item.id}>
@@ -77,6 +80,9 @@ const renderRow = (item: ExamList) => {
 
 const ExamsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
+    // Usage in your component
+    const role = await getRole();
+
 
     const params = await searchParams;
     const { page, ...queryParams } = params;
@@ -111,7 +117,7 @@ const ExamsListPage = async ({ searchParams, }: { searchParams: { [key: string]:
                         };
                         break;
                     default:
-                        break;  
+                        break;
                 }
             }
         }

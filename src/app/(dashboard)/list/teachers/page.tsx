@@ -7,6 +7,7 @@ import { Class, Subject, Teacher, PrismaClient, Prisma } from '@/generated/prism
 
 import { role, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -52,8 +53,11 @@ const columns = [
 ]
 
 
-const renderRow = (item: TeacherList) => {
+const renderRow = async (item: TeacherList) => {
 
+
+  // Usage in your component
+  const role = await getRole();
   return (
     <tr key={item.id}>
       <td>
@@ -88,6 +92,9 @@ const renderRow = (item: TeacherList) => {
 
 const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
+  // Usage in your component
+  const role = await getRole();
+
   const params = await searchParams;
   const { page, ...queryParams } = params;
 
@@ -97,9 +104,9 @@ const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string
 
   const query: Prisma.TeacherWhereInput = {};
   const sort: any = [
-        {updatedAt:'desc'},
-        {createdAt:'desc'}
-    ]
+    { updatedAt: 'desc' },
+    { createdAt: 'desc' }
+  ]
 
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
@@ -123,7 +130,7 @@ const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string
   }
 
 
-  
+
 
   const [data, count] = await prisma.$transaction([
     prisma.teacher.findMany({

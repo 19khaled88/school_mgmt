@@ -3,8 +3,9 @@ import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
 import { Announcement, Class, Prisma, PrismaClient } from '@/generated/prisma'
-import { annoucementsData, eventsData, examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
+import { annoucementsData, eventsData, examsData, lessonsData, resultsData, studentsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -28,7 +29,10 @@ const columns = [
     }
 ]
 
-const renderRow = (item: AnnounceType) => {
+const renderRow = async(item: AnnounceType) => {
+    // Usage in your component
+    const role = await getRole();
+
     return (
         <tr key={item.id}>
             <td>{item.title}</td>
@@ -55,6 +59,9 @@ const renderRow = (item: AnnounceType) => {
 
 const AnnouncementsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
+
+    // Usage in your component
+    const role = await getRole();
 
     const params = await searchParams;
     const { page, ...queryParams } = params;

@@ -5,6 +5,7 @@ import TableSearch from '@/components/TableSearch'
 import { Prisma, PrismaClient, Subject, Teacher } from '@/generated/prisma'
 import { parentsData, role, studentsData, subjectsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -32,12 +33,16 @@ const columns = [
 
 const prisma = new PrismaClient();
 
-const renderRow = (item: SubjectList) => {
+const renderRow = async (item: SubjectList) => {
     // return item.teachers.map((teacherName, index) => {
     //     const teacher = teachersData.find(s => String(s.name) === String(teacherName));
     //     const teacher_Name = teacher ? teacher.name : 'Unknown';
 
     // })
+
+
+    // Usage in your component
+    const role = await getRole();
 
     return (
         <tr key={`${item.id}`}>
@@ -74,14 +79,17 @@ const renderRow = (item: SubjectList) => {
 }
 
 const SubjectListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
+    // Usage in your component
+    const role = await getRole();
+
     const params = await searchParams;
     const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
     const query: Prisma.SubjectWhereInput = {};
     const sort: any = [
-        {updatedAt:'desc'},
-        {createdAt:'desc'}
+        { updatedAt: 'desc' },
+        { createdAt: 'desc' }
     ]
 
     if (queryParams) {

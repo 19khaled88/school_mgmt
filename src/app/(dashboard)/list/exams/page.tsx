@@ -20,28 +20,11 @@ type ExamList = Exam & {
 }
 
 const prisma = new PrismaClient();
-const columns = [
 
-    {
-        header: 'Subject', accessor: 'subjects',
-    },
-    {
-        header: 'Class', accessor: 'classes', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Teacher', accessor: 'teachers', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Date', accessor: 'dates', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Actions', accessor: 'action',
-    }
-]
 
 const renderRow = async (item: ExamList) => {
     // Usage in your component
-    const role = await getRole();
+    const { role } = await getRole();
 
     return (
         <tr key={item.id}>
@@ -60,16 +43,19 @@ const renderRow = async (item: ExamList) => {
 
             <td>
                 <div className='flex items-center gap-2'>
-                    <Link href={`/list/exams/${item.id}`}>
-                        <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                            <Image src="/edit.png" alt='' width={16} height={16} />
-                        </button>
-                    </Link>
+
                     {
-                        role === 'admin' && (
-                            <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                                <Image src="/delete.png" alt='' width={16} height={16} />
-                            </button>
+                        (role === 'admin' || role === 'teacher') && (
+                            <>
+                                <Link href={`/list/exams/${item.id}`}>
+                                    <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
+                                        <Image src="/edit.png" alt='' width={16} height={16} />
+                                    </button>
+                                </Link>
+                                <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
+                                    <Image src="/delete.png" alt='' width={16} height={16} />
+                                </button>
+                            </>
                         )
                     }
                 </div>
@@ -81,8 +67,26 @@ const renderRow = async (item: ExamList) => {
 const ExamsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
     // Usage in your component
-    const role = await getRole();
+    const { role ,currentUserId} = await getRole();
 
+    const columns = [
+
+        {
+            header: 'Subject', accessor: 'subjects',
+        },
+        {
+            header: 'Class', accessor: 'classes', className: 'hidden lg:table-cell',
+        },
+        {
+            header: 'Teacher', accessor: 'teachers', className: 'hidden lg:table-cell',
+        },
+        {
+            header: 'Date', accessor: 'dates', className: 'hidden lg:table-cell',
+        },
+        ...(role === 'admin' ? [{
+            header: 'Actions', accessor: 'action',
+        }] : [])
+    ]
 
     const params = await searchParams;
     const { page, ...queryParams } = params;
@@ -95,32 +99,57 @@ const ExamsListPage = async ({ searchParams, }: { searchParams: { [key: string]:
         { createdAt: 'desc' }
     ]
 
+    query.lesson = {};
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
                 switch (key) {
                     case 'classId':
-                        query.lesson = {
-                            classId: parseInt(value)
-                        };
+                        query.lesson.classId= parseInt(value);
                         break;
                     case 'teacherId':
-                        query.lesson = {
-                            teacherId: value
-                        };
+                        query.lesson.teacherId= value;
                         break;
                     case "search":
-                        query.lesson = {
-                            subject: {
+                        query.lesson.subject= {
                                 name: { contains: value, mode: 'insensitive' }
                             }
-                        };
                         break;
                     default:
                         break;
                 }
             }
         }
+    }
+
+    // ROLE CONDITION 
+    switch (role) {
+        case 'admin':
+            
+            break;
+        case 'teacher':
+            query.lesson.teacherId = currentUserId!;
+            break;
+        case 'student':
+            query.lesson.class = {
+                students:{
+                    some:{
+                        id:currentUserId!
+                    }
+                }
+            }
+            break;
+        case 'parent':
+            query.lesson.class ={
+                students:{
+                    some:{
+                        parentId:currentUserId!
+                    }
+                }
+            }
+            break;
+        default:
+            break;
     }
 
     const [data, count] = await prisma.$transaction([
@@ -160,7 +189,7 @@ const ExamsListPage = async ({ searchParams, }: { searchParams: { [key: string]:
                         </button>
 
                         {
-                            role === 'admin' && (
+                            (role === 'admin' || role === 'teacher') && (
                                 <FormModal table='exam' type='create' />
                             )
                         }

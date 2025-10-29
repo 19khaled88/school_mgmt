@@ -12,31 +12,18 @@ import React from 'react'
 
 type AnnounceType = Announcement & { Class: Class }
 
+
 const prisma = new PrismaClient();
-const columns = [
 
-    {
-        header: 'Title', accessor: 'title',
-    },
-    {
-        header: 'Class', accessor: 'classe',
-    },
-    {
-        header: 'Date', accessor: 'dates', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Actions', accessor: 'action',
-    }
-]
 
-const renderRow = async(item: AnnounceType) => {
+const renderRow = async (item: AnnounceType) => {
     // Usage in your component
-    const role = await getRole();
+    const {role} = await getRole();
 
     return (
         <tr key={item.id}>
             <td>{item.title}</td>
-            <td>{item.Class.name}</td>
+            <td>{item.Class?.name || "-"}</td>
             <td className='hidden md:table-cell'>{new Intl.DateTimeFormat('en-US').format(new Date(item.date))}</td>
             <td>
                 <div className='flex items-center gap-2'>
@@ -61,7 +48,22 @@ const AnnouncementsListPage = async ({ searchParams, }: { searchParams: { [key: 
 
 
     // Usage in your component
-    const role = await getRole();
+    const {role,currentUserId} = await getRole();
+
+    const columns = [
+
+        {
+            header: 'Title', accessor: 'title',
+        },
+        {
+            header: 'Class', accessor: 'classe',
+        },
+        {
+            header: 'Date', accessor: 'dates', className: 'hidden lg:table-cell',
+        },
+        ...(role === 'admin' ? [{ header: 'Actions', accessor: 'action', }] : [])
+
+    ]
 
     const params = await searchParams;
     const { page, ...queryParams } = params;
@@ -90,6 +92,17 @@ const AnnouncementsListPage = async ({ searchParams, }: { searchParams: { [key: 
             }
         }
     }
+
+    const roleConditions = {
+        teacher:{lessons:{some:{teacherId:currentUserId!}}},
+        student:{students:{some:{id:currentUserId!}}},
+        parent:{students:{some:{parentId:currentUserId!}}}
+    }
+
+    query.OR = [
+        {classId:null},
+        {Class:roleConditions[role as keyof typeof roleConditions] || {}}
+    ]
 
     const [data, count] = await prisma.$transaction([
         prisma.announcement.findMany({

@@ -11,16 +11,16 @@ data:any[];
 }) => {
   return (
     <table className='w-full mt-4 '>
-        <thead>
-            <tr className='text-left text-gray-500 text-sm'>
+        <thead className='w-full '>
+            <tr className='text-left text-gray-500 text-sm '>
                 {
                     columns.map((col:any)=>(
-                        <th key={col.accessor} className={col.className}>{col.header}</th>
+                        <th key={col.accessor} className={`${col.className} `}>{col.header}</th>
                     ))
                 }
             </tr>
         </thead>
-        <tbody>
+        <tbody className=''>
             {
                 data.map((item)=>renderRow(item))
             }

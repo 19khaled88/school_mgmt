@@ -21,27 +21,13 @@ const prisma = new PrismaClient();
 // type LessonList = Lesson & {subject:{id:string,name:string}} & {class:{id:string,name:string}}
 type LessonList = Lesson & { subject: Subject } & { class: Class } & { teacher: Teacher }
 
-const columns = [
 
-    {
-        header: 'Subject Names', accessor: 'subjects',
-    },
-    {
-        header: 'Class', accessor: 'classes', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Teacher', accessor: 'teachers', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Actions', accessor: 'action',
-    }
-]
 
 
 const renderRow = async (item: LessonList) => {
 
     // Usage in your component
-    const role = await getRole();
+    const { role } = await getRole();
 
     return (
         <tr key={item.id}>
@@ -57,16 +43,19 @@ const renderRow = async (item: LessonList) => {
             }</td>
             <td>
                 <div className='flex items-center gap-2'>
-                    <Link href={`/list/lessons?${item.id}`}>
-                        <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                            <Image src="/edit.png" alt='' width={16} height={16} />
-                        </button>
-                    </Link>
+                   
                     {
                         role === 'admin' && (
-                            <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                                <Image src="/delete.png" alt='' width={16} height={16} />
-                            </button>
+                            <>
+                                 <Link href={`/list/lessons?${item.id}`}>
+                                    <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
+                                        <Image src="/edit.png" alt='' width={16} height={16} />
+                                    </button>
+                                </Link>
+                                <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
+                                    <Image src="/delete.png" alt='' width={16} height={16} />
+                                </button>
+                            </>
                         )
                     }
                 </div>
@@ -78,7 +67,24 @@ const renderRow = async (item: LessonList) => {
 const LessonListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
     // Usage in your component
-    const role = await getRole();
+    const { role,currentUserId } = await getRole();
+
+    const columns = [
+
+        {
+            header: 'Subject Names', accessor: 'subjects',
+        },
+        {
+            header: 'Class', accessor: 'classes', className: 'hidden lg:table-cell',
+        },
+        {
+            header: 'Teacher', accessor: 'teachers', className: 'hidden lg:table-cell',
+        },
+        ...(role === 'admin' ? [{
+            header: 'Actions', accessor: 'action',
+        }] : [])
+    ]
+
 
     const params = await searchParams;
     const { page, ...queryParams } = params;

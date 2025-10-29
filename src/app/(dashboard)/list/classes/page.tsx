@@ -49,15 +49,15 @@ const columns = [
     {
         header: 'Supervisor', accessor: 'supervisor',
     },
-    {
+    ...(role === 'admin' ? [{
         header: 'Actions', accessor: 'action',
-    }
+    }]:[])
 ]
 
 
 const renderRow = async (item: ClassList) => {
     // Usage in your component
-    const role = await getRole();
+    const {role} = await getRole();
 
     return (
         <tr key={`${item.id}`}>
@@ -86,7 +86,7 @@ const renderRow = async (item: ClassList) => {
 const ClassesListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
     // Usage in your component
-    const role = await getRole();
+    const {role} = await getRole();
 
     const params = await searchParams;
     const { page, ...queryParams } = params;

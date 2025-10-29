@@ -27,37 +27,11 @@ type ResultList = Result & { exam: Exam[] } & { assignment: Assignment[] }
 
 const prisma = new PrismaClient()
 
-const columns = [
 
-    {
-        header: 'Title', accessor: 'title',
-    },
-
-    {
-        header: 'Teacher', accessor: 'teacher', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Student', accessor: 'student', className: 'hidden lg:table-cell',
-    },
-
-    {
-        header: 'Class', accessor: 'class',
-    },
-    {
-        header: 'Score', accessor: 'score', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Date', accessor: 'date', className: 'hidden lg:table-cell',
-    },
-
-    {
-        header: 'Actions', accessor: 'action',
-    }
-]
 
 const renderRow = async (item: Result) => {
     // Usage in your component
-    const role = await getRole();
+    const { role } = await getRole();
 
     return (
         <tr key={item.id}>
@@ -70,16 +44,19 @@ const renderRow = async (item: Result) => {
             <td className='hidden md:table-cell'>{new Intl.DateTimeFormat("en-US").format(new Date(item.startTime))}</td>
             <td>
                 <div className='flex items-center gap-2'>
-                    <Link href={`/list/exams/${item.id}`}>
-                        <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
-                            <Image src="/edit.png" alt='' width={16} height={16} />
-                        </button>
-                    </Link>
+
                     {
-                        role === 'admin' && (
-                            <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
-                                <Image src="/delete.png" alt='' width={16} height={16} />
-                            </button>
+                        (role === 'admin' || role === 'teacher') && (
+                            <>
+                                <Link href={`/list/exams/${item.id}`}>
+                                    <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
+                                        <Image src="/edit.png" alt='' width={16} height={16} />
+                                    </button>
+                                </Link>
+                                <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
+                                    <Image src="/delete.png" alt='' width={16} height={16} />
+                                </button>
+                            </>
                         )
                     }
                 </div>
@@ -90,7 +67,35 @@ const renderRow = async (item: Result) => {
 
 const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
     // Usage in your component
-    const role = await getRole();
+    const { role ,currentUserId} = await getRole();
+
+    const columns = [
+
+        {
+            header: 'Title', accessor: 'title',
+        },
+
+        {
+            header: 'Teacher', accessor: 'teacher', className: 'hidden lg:table-cell',
+        },
+        {
+            header: 'Student', accessor: 'student', className: 'hidden lg:table-cell',
+        },
+
+        {
+            header: 'Class', accessor: 'class',
+        },
+        {
+            header: 'Score', accessor: 'score', className: 'hidden lg:table-cell',
+        },
+        {
+            header: 'Date', accessor: 'date', className: 'hidden lg:table-cell',
+        },
+
+        ...(role === 'admin' || role === 'teacher') ? [{
+            header: 'Actions', accessor: 'action',
+        }] : []
+    ]
 
     const params = await searchParams;
     const { page, ...queryParams } = params;
@@ -123,6 +128,30 @@ const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string
             }
         }
     }
+
+    // ROLE CONDITION 
+    switch (role) {
+        case 'admin':
+            
+            break;
+        case 'teacher':
+            query.OR = [
+                {exam:{lesson:{teacherId:currentUserId!}}},
+                {assignment:{lesson:{teacherId:currentUserId!}}},
+            ]
+            break;
+        case 'student':
+            query.studentId = currentUserId!
+            break;
+        case 'parent':
+            query.student ={
+                parentId:currentUserId!
+            }
+            break;
+        default:
+            break;
+    }
+
 
     const [dataResponse, count] = await prisma.$transaction([
         prisma.result.findMany({

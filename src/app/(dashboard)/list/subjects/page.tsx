@@ -42,7 +42,7 @@ const renderRow = async (item: SubjectList) => {
 
 
     // Usage in your component
-    const role = await getRole();
+    const {role} = await getRole();
 
     return (
         <tr key={`${item.id}`}>
@@ -80,7 +80,7 @@ const renderRow = async (item: SubjectList) => {
 
 const SubjectListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
     // Usage in your component
-    const role = await getRole();
+    const {role} = await getRole();
 
     const params = await searchParams;
     const { page, ...queryParams } = params;

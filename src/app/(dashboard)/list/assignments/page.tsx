@@ -12,46 +12,29 @@ import React from 'react'
 
 type AssignmentList = Assignment & {
     lesson: {
-        subject: Subject;  
-        class :Class, 
+        subject: Subject;
+        class: Class,
         teacher: Teacher
-     } 
+    }
 }
 const prisma = new PrismaClient();
-const columns = [
 
-    {
-        header: 'Subject', accessor: 'subject',
-    },
-    {
-        header: 'Class', accessor: 'classe', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Teacher', accessor: 'teacher', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Due Date', accessor: 'dueDate', className: 'hidden lg:table-cell',
-    },
-    {
-        header: 'Actions', accessor: 'action',
-    }
-]
 
-const renderRow = async(item: AssignmentList) => {
+const renderRow = async (item: AssignmentList) => {
     // Usage in your component
-    const role = await getRole();
+    const {role} = await getRole();
 
     return (
-        <tr key={item.id}>
-            <td >{item.lesson.subject.name}</td>
-            <td className='hidden md:table-cell'>{item.lesson?.class.name}</td>
-            <td className='hidden md:table-cell'>{item.lesson?.teacher?.name + " " +item.lesson?.teacher.surname}</td>
-            <td className='hidden md:table-cell'>{new Date(item.dueDate).toLocaleDateString()}</td>
-            <td>
+        <tr key={item.id} className=''>
+            <td  className='' >{item.lesson.subject.name}</td>
+            <td  className=' hidden lg:table-cell'>{item.lesson?.class.name}</td>
+            <td  className=' hidden lg:table-cell'>{item.lesson?.teacher?.name + " " + item.lesson?.teacher.surname}</td>
+            <td  className=' hidden lg:table-cell'>{new Date(item.dueDate).toLocaleDateString()}</td>
+            <td  className=''>
                 <div className='flex items-center gap-2'>
 
                     {
-                        role === 'admin' && (
+                        ( role === 'admin' || role === 'teacher' ) && (
                             <>
                                 <Link href={`/list/assignments/${item.id}`}>
                                     <FormModal table='assignment' type='update' data={item} />
@@ -59,6 +42,7 @@ const renderRow = async(item: AssignmentList) => {
                                 <FormModal table='assignment' type='delete' id={item.id} />
                             </>
                         )
+
                     }
                 </div>
             </td>
@@ -69,12 +53,33 @@ const renderRow = async(item: AssignmentList) => {
 const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
     // Usage in your component
-    const role = await getRole();
+    const {role,currentUserId} = await getRole();
+
+    const columns = [
+
+        {
+            header: 'Subject', accessor: 'subject',
+        },
+        {
+            header: 'Class', accessor: 'classe', className: 'hidden lg:table-cell',
+        },
+        {
+            header: 'Teacher', accessor: 'teacher', className: 'hidden lg:table-cell',
+        },
+        {
+            header: 'Due Date', accessor: 'dueDate', className: 'hidden lg:table-cell',
+        },
+        ...(role === 'admin' || role === 'teacher' ? [{
+            header: 'Actions', accessor: 'action',
+        }] : [])
+    ]
 
     const params = await searchParams;
     const { page, ...queryParams } = params;
     const p = page ? parseInt(page) : 1;
 
+
+    // URL CONDITION
     // optional filters an sorting logic 
     const query: Prisma.AssignmentWhereInput = {};
     const sort: any = [
@@ -82,26 +87,21 @@ const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: st
         { createdAt: 'desc' }
     ]
 
+
+    query.lesson = {}
+
     if (queryParams) {
-         for (const [key, value] of Object.entries(queryParams)) {
+        for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
                 switch (key) {
                     case 'classId':
-                        query.lesson = {
-                            classId: parseInt(value)
-                        };
+                        query.lesson.classId = parseInt(value);
                         break;
                     case 'teacherId':
-                        query.lesson = {
-                            teacherId: value
-                        };
+                        query.lesson.teacherId = value;
                         break;
                     case "search":
-                        query.lesson = {
-                            subject: {
-                                name: { contains: value, mode: 'insensitive' }
-                            }
-                        };
+                        query.lesson.subject = {name: { contains: value, mode: 'insensitive' }};
                         break;
                     default:
                         break;
@@ -109,6 +109,36 @@ const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: st
             }
         }
     }
+
+
+    // ROLE CONDITION 
+    switch(role){
+        case "admin":
+            break;
+        case 'teacher':
+            query.lesson.teacherId = currentUserId!;
+        case 'student':
+            query.lesson.class ={
+                students:{
+                    some:{
+                        id:currentUserId!,
+                    }
+                }
+            }
+            break;
+        case 'parent':
+            query.lesson.class ={
+                students:{
+                    some:{
+                        parentId:currentUserId!,
+                    }
+                }
+            }
+            break;
+        default:
+            break;
+    }
+
 
     const [data, count] = await prisma.$transaction([
         prisma.assignment.findMany({
@@ -122,12 +152,12 @@ const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: st
                     //     class: true,
                     //     teacher: true,
                     // }
-                    select:{
-                        class:{ select:{name:true} },
-                        subject:{ select:{name:true} },
-                        teacher:{ select:{name:true,surname:true} },
+                    select: {
+                        class: { select: { name: true } },
+                        subject: { select: { name: true } },
+                        teacher: { select: { name: true, surname: true } },
                     }
-                    
+
                 },
                 results: true
             }
@@ -154,7 +184,7 @@ const AssignmentsListPage = async ({ searchParams, }: { searchParams: { [key: st
                         </button>
 
                         {
-                            role === 'admin' && (
+                            (role === 'admin' || role === 'teacher') && (
                                 <FormModal table='assignment' type='create' />
                             )
                         }

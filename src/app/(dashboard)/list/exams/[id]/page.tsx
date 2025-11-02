@@ -122,3 +122,17 @@
 // }
 
 // export default SingleTeacherPage
+
+
+
+import React from 'react'
+
+const SingleExamPage = () => {
+  return (
+    <div>
+      
+    </div>
+  )
+}
+
+export default SingleExamPage

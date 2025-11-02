@@ -29,7 +29,7 @@ const prisma = new PrismaClient()
 
 
 
-const renderRow = async (item: Result) => {
+const renderRow = async (item: ResultList) => {
     // Usage in your component
     const { role } = await getRole();
 
@@ -48,14 +48,16 @@ const renderRow = async (item: Result) => {
                     {
                         (role === 'admin' || role === 'teacher') && (
                             <>
-                                <Link href={`/list/exams/${item.id}`}>
+                                {/* <Link href={`/list/exams/${item.id}`}>
                                     <button className='w-7 h-7 flex items-center justify-center rounded-full bg-blue-300'>
                                         <Image src="/edit.png" alt='' width={16} height={16} />
                                     </button>
                                 </Link>
                                 <button className='w-7 h-7 flex items-center justify-center rounded-full bg-purple-300'>
                                     <Image src="/delete.png" alt='' width={16} height={16} />
-                                </button>
+                                </button> */}
+                                <FormModal table='result' type='update' data={item} />
+                                <FormModal table='result' type='delete' id={item.id} />
                             </>
                         )
                     }
@@ -67,7 +69,9 @@ const renderRow = async (item: Result) => {
 
 const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
     // Usage in your component
-    const { role ,currentUserId} = await getRole();
+    const { role, currentUserId } = await getRole();
+
+
 
     const columns = [
 
@@ -132,20 +136,20 @@ const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string
     // ROLE CONDITION 
     switch (role) {
         case 'admin':
-            
+
             break;
         case 'teacher':
             query.OR = [
-                {exam:{lesson:{teacherId:currentUserId!}}},
-                {assignment:{lesson:{teacherId:currentUserId!}}},
+                { exam: { lesson: { teacherId: currentUserId! } } },
+                { assignment: { lesson: { teacherId: currentUserId! } } },
             ]
             break;
         case 'student':
             query.studentId = currentUserId!
             break;
         case 'parent':
-            query.student ={
-                parentId:currentUserId!
+            query.student = {
+                parentId: currentUserId!
             }
             break;
         default:
@@ -186,6 +190,7 @@ const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string
         prisma.result.count({ where: query })
     ])
 
+    
     const data = dataResponse.map((item) => {
 
         const assessment = item.exam || item.assignment;
@@ -208,6 +213,8 @@ const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string
         }
     })
 
+
+
     return (
         <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
             {/*TOP*/}
@@ -225,7 +232,7 @@ const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string
                         </button>
 
                         {
-                            role === 'admin' && (
+                            (role === 'admin' || role === 'teacher') && (
                                 <FormModal table='result' type='create' />
                             )
                         }

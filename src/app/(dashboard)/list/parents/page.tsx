@@ -37,9 +37,12 @@ const renderRow = async (item: ParentList) => {
     const { role } = await getRole();
 
     return (
-        <tr key={`${item.id}`}>
+        <tr 
+            key={`${item.id}`}
+            className='border-b borer-gray-200 even:bg-slate-500 text-sm hover:bg-purple-500'
+        >
 
-            <td>
+            <td className='flex items-center gap-4 p-4'>
                 <div className='flex flex-col'>
                     <h3 className='font-semibold'>{item.name}</h3>
                     <p className='text-xs text-gray-500'>{item?.email}</p>

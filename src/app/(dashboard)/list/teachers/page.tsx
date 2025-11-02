@@ -27,37 +27,14 @@ import React from 'react'
 const prisma = new PrismaClient();
 type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] }
 
-const columns = [
-  {
-    header: 'Info', accessor: 'info'
-  },
-  {
-    header: 'Teacher ID', accessor: 'teacher id', className: 'hidden md:table-cell',
-  },
-  {
-    header: 'Subjects', accessor: 'subjects', className: 'hidden md:table-cell',
-  }
-  ,
-  {
-    header: 'Classes', accessor: 'classes', className: 'hidden md:table-cell',
-  },
-  {
-    header: 'Phone', accessor: 'phone', className: 'hidden lg:table-cell',
-  },
-  {
-    header: 'Address', accessor: 'address', className: 'hidden lg:table-cell',
-  },
-  {
-    header: 'Actions', accessor: 'action',
-  }
-]
+
 
 
 const renderRow = async (item: TeacherList) => {
 
 
   // Usage in your component
-  const {role,currentUserId} = await getRole();
+  const { role, currentUserId } = await getRole();
   return (
     <tr key={item.id}>
       <td>
@@ -93,7 +70,32 @@ const renderRow = async (item: TeacherList) => {
 const TeacherListPage = async ({ searchParams, }: { searchParams: { [key: string]: string | undefined } }) => {
 
   // Usage in your component
-  const {role,currentUserId} = await getRole();
+  const { role, currentUserId } = await getRole();
+
+  const columns = [
+    {
+      header: 'Info', accessor: 'info'
+    },
+    {
+      header: 'Teacher ID', accessor: 'teacher id', className: 'hidden md:table-cell',
+    },
+    {
+      header: 'Subjects', accessor: 'subjects', className: 'hidden md:table-cell',
+    }
+    ,
+    {
+      header: 'Classes', accessor: 'classes', className: 'hidden md:table-cell',
+    },
+    {
+      header: 'Phone', accessor: 'phone', className: 'hidden lg:table-cell',
+    },
+    {
+      header: 'Address', accessor: 'address', className: 'hidden lg:table-cell',
+    },
+    ...(role === 'admin' ? [{
+      header: 'Actions', accessor: 'action',
+    }] : [])
+  ]
 
   const params = await searchParams;
   const { page, ...queryParams } = params;

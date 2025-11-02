@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "type-check": "tsc --noEmit",
-    "postinstall": "tailwindcss init -p",
+    "postinstall": "prisma generate",
     "prepare": "husky install",
     "format": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1",

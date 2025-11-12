@@ -2,7 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Class, Subject, Teacher, PrismaClient, Prisma } from '@prisma/client'
+import { Class, Subject, Teacher, PrismaClient, Prisma } from '@/generated/prisma'
 
 
 import { role, teachersData } from '@/lib/data'
@@ -45,8 +45,8 @@ const renderRow = async (item: TeacherList) => {
         </div>
       </td>
       <td className='hidden md:table-cell'>{item.username}</td>
-      <td className='hidden md:table-cell'>{item.subjects.map(subject => subject.name).join(",")}</td>
-      <td className='hidden md:table-cell'>{item.classes.map(classItem => classItem.name).join(",")}</td>
+      <td className='hidden md:table-cell'>{item.subjects.map((subject:any) => subject.name).join(",")}</td>
+      <td className='hidden md:table-cell'>{item.classes.map((classItem:any) => classItem.name).join(",")}</td>
       <td className='hidden md:table-cell'>{item.phone}</td>
       <td className='hidden md:table-cell'>{item.address}</td>
       <td>

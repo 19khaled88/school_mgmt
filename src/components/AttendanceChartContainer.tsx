@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import AttendanceChart from './AttendanceChart'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@/generated/prisma'
 
 
 const prisma = new PrismaClient()
@@ -17,7 +17,7 @@ const AttendanceChartContainer = async () => {
 
 
 
-    const resData = await prisma.attendance.findMany({
+    const resData:{date:Date, present:boolean}[] = await prisma.attendance.findMany({
         where: {
             date: {
                 gte: lastMonday,

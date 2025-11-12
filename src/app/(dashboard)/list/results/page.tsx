@@ -2,7 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Assignment, Exam, Prisma, PrismaClient } from '@prisma/client'
+import { Assignment, Exam, Prisma, PrismaClient } from '@/generated/prisma'
 import { examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import { getRole } from '@/lib/utils'
@@ -191,7 +191,7 @@ const ResultsListPage = async ({ searchParams, }: { searchParams: { [key: string
     ])
 
     
-    const data = dataResponse.map((item) => {
+    const data = dataResponse.map((item:any) => {
 
         const assessment = item.exam || item.assignment;
 

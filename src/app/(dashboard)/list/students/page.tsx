@@ -2,7 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Attendance, Class, Prisma, PrismaClient, Result, Student } from '@prisma/client'
+import { Attendance, Class, Prisma, PrismaClient, Result, Student } from '@/generated/prisma'
 import { role, studentsData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import { getRole } from '@/lib/utils'
@@ -45,9 +45,9 @@ const renderRow = async (item: StudnetList) => {
             <td className='hidden md:table-cell'>{item.sex}</td>
             <td className='hidden md:table-cell'>{item.phone}</td>
             <td className='hidden md:table-cell'>{item.address}</td>
-            <td className='hidden md:table-cell'>{item.attendances.map(attendance => attendance.present).join(',')}</td>
+            <td className='hidden md:table-cell'>{item.attendances.map((attendance:any) => attendance.present).join(',')}</td>
 
-            <td className='hidden md:table-cell'>{item.resultes.map(result => result.score).join(',')}</td>
+            <td className='hidden md:table-cell'>{item.resultes.map((result:any) => result.score).join(',')}</td>
             <td>
                 <div className='flex items-center gap-2'>
                     <Link href={`/list/students/${item.id}`}>

@@ -1,10 +1,10 @@
 // import { PrismaClient, Day, UserSex } from '../src/generated/prisma'
 // import {Day, UserSex} from '../src/generated/prisma'
-import prisma from "@/lib/prisma";
-
-import { Day,UserSex } from "../src/generated/prisma";
 
 
+import { Day,UserSex,PrismaClient } from "../src/generated/prisma";
+
+const prisma = new PrismaClient();
 // test
 
 async function main() {

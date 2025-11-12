@@ -2,13 +2,14 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Assignment, Class, Prisma, PrismaClient, Subject, Teacher } from '@/generated/prisma'
+import { Assignment, Class, Prisma, Subject, Teacher } from '../../../../generated/prisma'
 import { assignmentsData, examsData, lessonsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import prisma from '@/lib/prisma'
 
 type AssignmentList = Assignment & {
     lesson: {
@@ -17,7 +18,7 @@ type AssignmentList = Assignment & {
         teacher: Teacher
     }
 }
-const prisma = new PrismaClient();
+
 
 
 const renderRow = async (item: AssignmentList) => {

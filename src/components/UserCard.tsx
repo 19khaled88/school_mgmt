@@ -1,9 +1,9 @@
-import { PrismaClient } from '@/generated/prisma'
+
+import prisma from '@/lib/prisma';
 import Image from 'next/image'
 import React from 'react'
 
 
-const prisma =new PrismaClient();
 
 type userRole = "admin" | 'student' | 'teacher' | 'parent';
 

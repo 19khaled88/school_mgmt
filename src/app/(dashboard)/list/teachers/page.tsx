@@ -2,7 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Class, Subject, Teacher, PrismaClient, Prisma } from '@/generated/prisma'
+import { Class, Subject, Teacher, Prisma } from '../../../../generated/prisma'
 
 
 import { role, teachersData } from '@/lib/data'
@@ -11,6 +11,7 @@ import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import prisma from '@/lib/prisma'
 
 // type Teacher = {
 //   id: number;
@@ -24,7 +25,7 @@ import React from 'react'
 //   address: string;
 // }
 
-const prisma = new PrismaClient();
+
 type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] }
 
 

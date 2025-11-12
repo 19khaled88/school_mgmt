@@ -2,9 +2,10 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Class, Exam, Prisma, PrismaClient, Subject, Teacher } from '@/generated/prisma'
+import { Class, Exam, Prisma, Subject, Teacher } from '../../../../generated/prisma'
 import { examsData, lessonsData, role, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import prisma from '@/lib/prisma'
 import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,7 +20,7 @@ type ExamList = Exam & {
     }
 }
 
-const prisma = new PrismaClient();
+
 
 
 const renderRow = async (item: ExamList) => {

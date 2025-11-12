@@ -2,13 +2,14 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Class, Event, Prisma, PrismaClient } from '@/generated/prisma'
+import { Class, Event, Prisma } from '../../../../generated/prisma'
 import { eventsData, examsData, lessonsData, resultsData, role, studentsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import prisma from '@/lib/prisma'
 
 // type Event = {
 //     id: number;
@@ -21,7 +22,7 @@ import React from 'react'
 
 type EventList = Event & { Class: Class }
 
-const prisma = new PrismaClient();
+
 
 
 const renderRow = async (item: EventList) => {

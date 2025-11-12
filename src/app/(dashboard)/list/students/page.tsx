@@ -2,9 +2,10 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Attendance, Class, Prisma, PrismaClient, Result, Student } from '@/generated/prisma'
+import { Attendance, Class, Prisma, Result, Student } from '../../../../generated/prisma'
 import { role, studentsData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
+import prisma from '@/lib/prisma'
 import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -22,7 +23,7 @@ import React from 'react'
 //     address: string;
 // }
 
-const prisma = new PrismaClient()
+
 type StudnetList = Student & { attendances: Attendance[] } & { resultes: Result[] } & { Class: Class[] }
 
 

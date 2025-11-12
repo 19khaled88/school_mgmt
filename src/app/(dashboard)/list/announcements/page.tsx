@@ -2,19 +2,20 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Announcement, Class, Prisma, PrismaClient } from '@/generated/prisma';
+import { Announcement, Class, Prisma } from '../../../../generated/prisma';
 import { annoucementsData, eventsData, examsData, lessonsData, resultsData, studentsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import { getRole } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import prisma from '@/lib/prisma';
 
 
 type AnnounceType = Announcement & { Class: Class }
 
 
-const prisma = new PrismaClient();
+
 
 
 const renderRow = async (item: AnnounceType) => {

@@ -12,14 +12,14 @@
     "postinstall": "prisma generate",
     "prettier": "prettier --write .",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:generate": "prisma generate",
+    "prisma:generate": "prisma generate --no-engine",
     "prisma:seed": "prisma db seed"
   },
   "dependencies": {
     "@clerk/elements": "^0.23.73",
     "@clerk/nextjs": "^6.33.7",
     "@hookform/resolvers": "^5.2.2",
-    "@prisma/client": "^6.18.0",
+    "@prisma/client": "^6.19.0",
     "@prisma/extension-accelerate": "^2.0.2",
     "moment": "^2.30.1",
     "next": "15.5.2",
@@ -39,7 +39,7 @@
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
-    "prisma": "^6.18.0",
+    "prisma": "^6.19.0",
     "tailwindcss": "^4.1.13",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

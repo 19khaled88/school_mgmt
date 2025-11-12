@@ -2,7 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Announcement, Class, Prisma, PrismaClient } from '@prisma/client'
+import { Announcement, Class, Prisma, PrismaClient } from '@/generated/prisma';
 import { annoucementsData, eventsData, examsData, lessonsData, resultsData, studentsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import { getRole } from '@/lib/utils'

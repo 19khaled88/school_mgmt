@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react'
 import { RadialBarChart, RadialBar, Legend, ResponsiveContainer } from 'recharts';
 import CountChart from './CountChart';
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@/generated/prisma'
 
 const prisma = new PrismaClient();
 const CountChartContainer = async () => {
@@ -10,8 +10,8 @@ const CountChartContainer = async () => {
     const data = await prisma.student.groupBy({ by:['sex'],_count:true})
 
     
-    const boys = data.find((d)=>d.sex === 'MALE')?._count || 0;
-    const girls = data.find((d)=>d.sex === 'FEMALE')?._count || 0;
+    const boys = data.find((d:any)=>d.sex === 'MALE')?._count || 0;
+    const girls = data.find((d:any)=>d.sex === 'FEMALE')?._count || 0;
 
     return (
         <div className='bg-white rounded-xl w-full h-full p-4'>

@@ -2,7 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Prisma, PrismaClient, Subject, Teacher } from '@prisma/client'
+import { Prisma, PrismaClient, Subject, Teacher } from '@/generated/prisma'
 import { parentsData, role, studentsData, subjectsData, teachersData } from '@/lib/data'
 import { ITEM_PER_PAGE } from '@/lib/herlper'
 import { getRole } from '@/lib/utils'
@@ -55,7 +55,7 @@ const renderRow = async (item: SubjectList) => {
             <td className='hidden md:table-cell'>{
                 // studentsData.filter(student => item.students.map(String).includes(String(student.id))).map(student => student.name).join(', ') || "No Students"
                 // teacher_Name
-                item.teachers.map(teacher => teacher.name).join(',')
+                item.teachers.map((teacher:any) => teacher.name).join(',')
             }</td>
 
             <td>

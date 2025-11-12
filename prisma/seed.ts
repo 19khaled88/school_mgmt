@@ -1,6 +1,6 @@
-import { PrismaClient, Day, UserSex } from '../src/generated/prisma'
+// import { PrismaClient, Day, UserSex } from '../src/generated/prisma'
 // import {Day, UserSex} from '../src/generated/prisma'
-// import { PrismaClient } from "@prisma/client";
+import { PrismaClient,Day,UserSex } from "@prisma/client";
 
 const prisma = new PrismaClient();
 

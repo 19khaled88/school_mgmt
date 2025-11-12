@@ -125,6 +125,8 @@ const Menu = () => {
     // get role from user's public metadata 
     const role = user?.publicMetadata?.role as string;
 
+    
+
     // show loading state while clerk is loading
     if (!isLoaded) {
         return (
@@ -145,8 +147,10 @@ const Menu = () => {
             <div className='mt-4 text-sm'>
                 <div className="flex flex-col gap-2">
                     <Link href="/" className='flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-blue-200'>
-                        <Image src="/home.png" alt='Home' width={20} height={20} />
-                        <span className='hidden lg:block'>Home</span>
+                        <>
+                            <Image src="/home.png" alt='Home' width={20} height={20} />
+                            <span className='hidden lg:block'>Home</span>
+                        </>
                     </Link>
                     <Link href="/login" className='flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-blue-200'>
                         <Image src="/logout.png" alt='Login' width={20} height={20} />

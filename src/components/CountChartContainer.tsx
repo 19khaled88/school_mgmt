@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react'
 import { RadialBarChart, RadialBar, Legend, ResponsiveContainer } from 'recharts';
 import CountChart from './CountChart';
-import { PrismaClient } from '@/generated/prisma'
+import { PrismaClient } from '../generated/prisma'
 
 const prisma = new PrismaClient();
 const CountChartContainer = async () => {

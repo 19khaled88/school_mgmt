@@ -58,7 +58,7 @@ const AttendanceChartContainer = async () => {
             //     attendaceMap[dayName].absent++; // Increment absent count
             // }
 
-            console.log(dayDame)
+            console.log('date', dayDame)
         }
 
 

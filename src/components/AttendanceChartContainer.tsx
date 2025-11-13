@@ -47,17 +47,17 @@ const AttendanceChartContainer = async () => {
          const dayName = daysOfWeek[dayOfWeek]
 
 
-        if(dayOfWeek >= 1 && dayOfWeek <=5){
-            const dayDame = daysOfWeek[dayOfWeek - 1];
+        // if(dayOfWeek >= 1 && dayOfWeek <=5){
+        //     const dayDame = daysOfWeek[dayOfWeek - 1];
 
             
 
-            if(item.present){
-                attendaceMap[dayName].present++; // Increment present count
-            } else {
-                attendaceMap[dayName].absent++; // Increment absent count
-            }
-        }
+        //     if(item.present){
+        //         attendaceMap[dayName].present++; // Increment present count
+        //     } else {
+        //         attendaceMap[dayName].absent++; // Increment absent count
+        //     }
+        // }
 
 
     })

@@ -3,7 +3,7 @@
 
 
 import prisma from "@/lib/prisma";
-import { Day,UserSex } from "@prisma/client";
+import { Day,UserSex } from "@/generated/prisma";
 
 
 // test

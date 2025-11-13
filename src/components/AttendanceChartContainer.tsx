@@ -15,7 +15,7 @@ const AttendanceChartContainer = async () => {
 
 
 
-    const resData:{date:Date, present:boolean}[] = await prisma.attendance.findMany({
+    const resData: { date: Date, present: boolean }[] = await prisma.attendance.findMany({
         where: {
             date: {
                 gte: lastMonday,
@@ -26,7 +26,7 @@ const AttendanceChartContainer = async () => {
             present: true
         }
     });
-    
+
 
     const daysOfWeek = ["Mon", "Thu", "Wed", "Thu", "Fri"]
 
@@ -39,44 +39,46 @@ const AttendanceChartContainer = async () => {
         Sun: { present: 0, absent: 0 }
     }
 
-    resData.forEach((item)=>{
+    resData.forEach((item) => {
         const itemDate = new Date(item.date);
         const dayOfWeek = itemDate.getDay();
 
-         const daysOfWeek = ["Mon", "Thu", "Wed", "Thu", "Fri"]
-         const dayName = daysOfWeek[dayOfWeek]
+        const daysOfWeek = ["Mon", "Thu", "Wed", "Thu", "Fri"]
+        const dayName = daysOfWeek[dayOfWeek]
 
 
-        if(dayOfWeek >= 1 && dayOfWeek <=5){
+        if (dayOfWeek >= 1 && dayOfWeek <= 5) {
             const dayDame = daysOfWeek[dayOfWeek - 1];
-            if(item.present){
-                attendaceMap[dayName].present++; // Increment present count
-            } else {
-                attendaceMap[dayName].absent++; // Increment absent count
+            if (attendaceMap[dayName]) {
+                if (item.present) {
+                    attendaceMap[dayName].present++; // Increment present count
+                } else {
+                    attendaceMap[dayName].absent++; // Increment absent count
+                }
             }
 
-            
+
         }
 
 
     })
 
 
- 
-    const data = daysOfWeek.map(day=>{
+
+    const data = daysOfWeek.map(day => {
         const name = day
         const present = attendaceMap[day]?.present ?? 0;
         const absent = attendaceMap[day]?.absent ?? 0;
-   
+
         return {
-            name:name,
-            present:present,
-            absent:absent
+            name: name,
+            present: present,
+            absent: absent
         }
     })
 
 
-     
+
     // resData.forEach(item => {
     //     const itemDate = new Date(item.date)
 
@@ -100,7 +102,7 @@ const AttendanceChartContainer = async () => {
                 <Image src="/moreDark.png" alt='' width={20} height={20} />
             </div>
 
-            <AttendanceChart data={data}/>
+            <AttendanceChart data={data} />
 
         </div>
     )

@@ -2,7 +2,7 @@ import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { Class, Subject, Teacher, Prisma } from '../../../../generated/prisma'
+import { Class, Subject, Teacher, Prisma } from '@/generated/prisma'
 
 
 import { role, teachersData } from '@/lib/data'

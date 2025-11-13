@@ -30,7 +30,7 @@ const AttendanceChartContainer = async () => {
 
     const daysOfWeek = ["Mon", "Thu", "Wed", "Thu", "Fri"]
 
-    const attendaceMap: { [key: string]: { present: number, absent: number } } = {
+    const attendaceMap: Record<string, { present: number, absent: number }> = {
         Mon: { present: 0, absent: 0 },
         Tue: { present: 0, absent: 0 },
         Wed: { present: 0, absent: 0 },
@@ -49,16 +49,13 @@ const AttendanceChartContainer = async () => {
 
         if(dayOfWeek >= 1 && dayOfWeek <=5){
             const dayDame = daysOfWeek[dayOfWeek - 1];
+            if(item.present){
+                attendaceMap[dayName].present++; // Increment present count
+            } else {
+                attendaceMap[dayName].absent++; // Increment absent count
+            }
 
             
-
-            // if(item.present){
-            //     attendaceMap[dayName].present++; // Increment present count
-            // } else {
-            //     attendaceMap[dayName].absent++; // Increment absent count
-            // }
-
-            console.log('date', dayDame)
         }
 
 

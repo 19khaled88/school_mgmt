@@ -13,7 +13,7 @@ const EventList = async ({ dateParams }: { dateParams: string | undefined }) => 
     }
 
 
-    const baseDate = dateParams ? new Date(dateParams) : new Date();
+    const baseDate =  new Date(dateParams);
 
     // Create *separate copies* to avoid mutation
     const startOfDay = new Date(baseDate);

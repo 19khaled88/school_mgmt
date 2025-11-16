@@ -1,6 +1,6 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import InputField from '../InputField';
@@ -23,7 +23,7 @@ const schema = z.object({
 
 type Inputs = z.infer<typeof schema>;
 
-const StudentForm = ({ type, data }: { type: "create" | "update", data?: any }) => {
+const StudentForm = ({ type, data,setOpen }: { type: "create" | "update", data?: any,setOpen: Dispatch<SetStateAction<boolean>> }) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({ resolver: zodResolver(schema) });
 

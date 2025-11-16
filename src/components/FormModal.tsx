@@ -2,11 +2,13 @@
 import { FormType, TableName } from '@/helper/type';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { JSX, useState } from 'react'
+import React, { Dispatch, JSX, SetStateAction, useState } from 'react'
 // import ParentForm from './forms/ParentForm';
 // import TeacherForm from './forms/TeacherForm';
 // import StudentForm from './forms/StudentForm';
 
+
+// USE Lazy loading for forms
 const TeacherForm = dynamic(() => import('./forms/TeacherForm'), { loading: () => <h1>Loading...</h1> });
 const StudentForm = dynamic(() => import('./forms/StudentForm'), { loading: () => <h1>Loading...</h1> });
 const ParentForm = dynamic(() => import('./forms/ParentForm'), { loading: () => <h1>Loading...</h1> });
@@ -20,31 +22,30 @@ const EventForm = dynamic(() => import('./forms/EventForm'), { loading: () => <h
 const AnnouncementForm = dynamic(() => import('./forms/AnnouncementForm'), { loading: () => <h1>Loading...</h1> });
 
 
-const forms: { [key: string]: (type: 'create' | 'update', data?: any) => JSX.Element; } = {
-    teacher: (type, data) => <TeacherForm type={type} data={data} />,
-    student: (type, data) => <StudentForm type={type} data={data} />,
-    parent: (type, data) => <ParentForm type={type} data={data} />,
-    subject: (type, data) => <SubjectForm type={type} data={data} />,
-    class: (type, data) => < ClassForm type={type} data={data} />,
-    lesson: (type, data) => < LessonForm type={type} data={data} />,
-    exam: (type, data) => < ExamForm type={type} data={data} />,
-    assignment: (type, data) => < AssignmentForm type={type} data={data} />,
-    result: (type, data) => < ResultForm type={type} data={data} />,
-    event: (type, data) => < EventForm type={type} data={data} />,
-    announcement: (type, data) => <AnnouncementForm type={type} data={data} />,
-
+const forms: { [key: string]: (setOpen:Dispatch<SetStateAction<boolean>>,type: 'create' | 'update', data?: any) => JSX.Element; } = {
+    teacher: (setOpen,type, data) => <TeacherForm type={type} data={data} setOpen={setOpen} />,
+    student: (setOpen,type, data) => <StudentForm type={type} data={data} setOpen={setOpen} />,
+    parent: (setOpen,type, data) => <ParentForm type={type} data={data} setOpen={setOpen} />,
+    subject: (setOpen,type, data) => <SubjectForm type={type} data={data} setOpen={setOpen} />,
+    class: (setOpen,type, data) => < ClassForm type={type} data={data} setOpen={setOpen} />,
+    lesson: (setOpen,type, data) => < LessonForm type={type} data={data} setOpen={setOpen} />,
+    exam: (setOpen,type, data) => < ExamForm type={type} data={data} setOpen={setOpen} />,
+    assignment: (setOpen,type, data) => < AssignmentForm type={type} data={data} setOpen={setOpen} />,
+    result: (setOpen,type, data) => < ResultForm type={type} data={data} setOpen={setOpen} />,
+    event: (setOpen,type, data) => < EventForm type={type} data={data} setOpen={setOpen} />,
+    announcement: (setOpen,type, data) => <AnnouncementForm type={type} data={data} setOpen={setOpen} />,
 }
+
 
 type FormModalProps = {
     table: TableName, type: FormType, data?: any; id?: number | string;
 }
 
+
 const FormModal = ({ table, type, data, id }: FormModalProps) => {
     const size = type === 'create' ? 'w-8 h-8' : 'w-7 h-7';
     const bgColor = type === "create" ? 'bg-yellow-300' : type === 'update' ? 'bg-blue-300' : 'bg-purple-300'
-
     const [open, setOpen] = useState(false);
-
 
     const Form = () => {
         return type === 'delete' && id ? (
@@ -52,11 +53,12 @@ const FormModal = ({ table, type, data, id }: FormModalProps) => {
                 <span className='text-center font-medium'>All data will be lost. Are you sure you want to delete this {table}</span>
                 <button className='bg-red-700 text-white py-2 px-4 rounded-md border-none w-max self-center'>Delete</button>
             </form>) : type === 'create' || type === 'update' ? (
-                forms[table](type, data)
+                forms[table](setOpen,type, data)
             ) : (
             "Form not found"
         )
     }
+    
     return (
         <>
             <button className={`${size} flex items-center justify-center rounded-full ${bgColor}`} onClick={() => setOpen(!open)}>

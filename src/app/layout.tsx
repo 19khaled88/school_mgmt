@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Providers } from "@/components/Providers";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -20,7 +22,7 @@ export default function RootLayout({
       <html lang="en">
         <body className="h-screen">
           <Providers>
-          {children}
+          {children} <ToastContainer position="bottom-right" theme="dark"/>
            </Providers>
         </body>
       </html>
